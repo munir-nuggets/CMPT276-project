@@ -1,7 +1,7 @@
 # Group Project Proposal
 
 ### Application Name: MarketMimic
-### Group Members: Munir Adam, Marcus Dooley, Kenneth Emata, Muskaan Madaan, Parmveer Nijjar
+### Group Members: Munir Adam, Marcus Dooley, Kenneth Emata, Muskan Madaan, Parmveer Nijjar
 
 ## Abstract: 
 MarketMimic is a comprehensive web-based stock simulator designed to provide users with a realistic trading experience using real-time stock data without financial risk. It features real-time stock data and history for up to 50 symbols, customizable stock watchlists, and simulated trading using artificial currency. Users can track stock prices, receive notifications on price targets, and explore historical data through intuitive graphs. MarketMimic includes beginner tutorials designed to guide new users through the fundamentals of stock market investing, ensuring a smooth and informative introduction to the platform. 
