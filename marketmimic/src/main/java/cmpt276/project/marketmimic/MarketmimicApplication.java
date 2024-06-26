@@ -10,5 +10,6 @@ public class MarketmimicApplication {
 		SpringApplication.run(MarketmimicApplication.class, args);
 	}
 
-	//Test Commit 2 (Parmveer)
+	//Test Commit (Parmveer)
+	//Test Commit (Marcus)
 }
