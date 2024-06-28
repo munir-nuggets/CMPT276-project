@@ -25,7 +25,7 @@ public class loginController {
         String username = entity.get("userName");
         String password = entity.get("password");
         String email = entity.get("email");
-        User user = new User(username, password, email);
+        User user = new User(username, email, password);
         userRepo.save(user);
         return "homepage";
     }
