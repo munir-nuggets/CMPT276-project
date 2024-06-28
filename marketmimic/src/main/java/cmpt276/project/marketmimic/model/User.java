@@ -8,21 +8,21 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int uid;
-    private String userName;
+    private String username;
     private String email;
     private String password;
     public User() {
     }
-    public User(String userName, String email, String password) {
-        this.userName = userName;
+    public User(String username, String email, String password) {
+        this.username = username;
         this.email = email;
         this.password = password;
     }
     public String getUserName() {
-        return userName;
+        return username;
     }
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUserName(String username) {
+        this.username = username;
     }
     public String getEmail() {
         return email;

@@ -22,7 +22,7 @@ public class loginController {
 
     @PostMapping("/usersignup")
     public String userSignup(@RequestParam Map<String, String> entity) {
-        String username = entity.get("userName");
+        String username = entity.get("username");
         String password = entity.get("password");
         String email = entity.get("email");
         User user = new User(username, email, password);
