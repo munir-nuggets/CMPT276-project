@@ -1,6 +1,13 @@
 package cmpt276.project.marketmimic.model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name="users")
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int uid;
     private String userName;
     private String email;
     private String password;
@@ -28,5 +35,11 @@ public class User {
     }
     public void setPassword(String password) {
         this.password = password;
+    }
+    public int getUid() {
+        return uid;
+    }
+    public void setUid(int uid) {
+        this.uid = uid;
     }
 }
