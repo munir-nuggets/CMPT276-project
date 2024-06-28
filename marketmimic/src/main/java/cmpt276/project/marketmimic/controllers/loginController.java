@@ -10,7 +10,6 @@ import cmpt276.project.marketmimic.model.User;
 import cmpt276.project.marketmimic.model.UserRepository;
 
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod; 
 import java.util.Map;
 
 
@@ -23,7 +22,7 @@ public class loginController {
 
     @PostMapping("/usersignup")
     public String userSignup(@RequestParam Map<String, String> entity) {
-        String username = entity.get("username");
+        String username = entity.get("userName");
         String password = entity.get("password");
         String email = entity.get("email");
         User user = new User(username, password, email);
