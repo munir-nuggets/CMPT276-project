@@ -23,6 +23,6 @@ public class loginController {
         String newPassword = newUser.get("password");
         userRepo.save(new User(newUserName, newEmail, newPassword));
         response.setStatus(201);
-        return "users/addedUsers";
+        return "users/addedUser";
     }
 }
