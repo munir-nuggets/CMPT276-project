@@ -12,7 +12,7 @@
 	<artifactId>marketmimic</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>marketmimic</name>
-	<description>Demo project for Spring Boot</description>
+	<description>MarketMimic - A real-time stock investing/trading simulator</description>
 	<url/>
 	<licenses>
 		<license/>
