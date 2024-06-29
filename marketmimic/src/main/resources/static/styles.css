@@ -1,0 +1,13 @@
+body{
+    background-color: #232946
+}
+
+#signup-body{
+    background: rgb(35,41,70);
+    background: linear-gradient(90deg, rgba(35,41,70,1) 26%, rgba(15,68,117,1) 100%);
+
+}
+
+#signup-form{
+    color: #fffffe;
+}
