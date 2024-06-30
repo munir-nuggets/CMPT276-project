@@ -61,6 +61,7 @@ public class apiController {
                 new ParameterizedTypeReference<List<StockSymbol>>() {}
         );
         List<StockSymbol> symbolsResponse = response.getBody();
+        Collections.sort(symbolsResponse, Comparator.comparing(StockSymbol::getDescription));
         model.addAttribute("symbols", symbolsResponse);
         return "stocklist";
     }

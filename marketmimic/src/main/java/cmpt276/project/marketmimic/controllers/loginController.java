@@ -2,8 +2,6 @@ package cmpt276.project.marketmimic.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import cmpt276.project.marketmimic.model.User;
@@ -29,17 +27,6 @@ public class loginController {
         userRepo.save(user);
         return "homepage";
     }
-    
-
-    @GetMapping("/userlogin")
-    public String userLogin(@RequestBody String entity) {
-        return "homepage";
-    }
-     
-    @GetMapping("/stocklist")
-    public String stock_page(){
-        return "stocklist";
-    }
 
     @PostMapping("/userlogin")
     public String userLogin(@RequestParam Map<String, String> loginData){
@@ -49,21 +36,18 @@ public class loginController {
         Optional<User> userOpt = userRepo.findByUsername(usernameOrEmail);
         if(!userOpt.isPresent()){
             userOpt = userRepo.findByEmail(usernameOrEmail);
-            if(!userOpt.isPresent()){
-                userOpt = userRepo.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail);
-            }
         }
         if(userOpt.isPresent() && userOpt.get().getPassword().equals(password)){
-           return "redirect:/stocklist";
+           return "redirect:/api/stocks/";
         }
         else{
-           return "redirect:/userlogin";
+           return "invalidlogin";
         }
     }
 
     @PostMapping("/logout")
     public String logout(){
-        return "redirect:/userlogin";
+        return "redirect:/home";
     }
 
     @RequestMapping("home")
