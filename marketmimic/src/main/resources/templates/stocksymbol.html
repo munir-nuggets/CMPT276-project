@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Symbol Details</title>
+</head>
+<body>
+    <h1>Stock Data for <span th:text="${symbol}"></span></h1>
+    <p>Current Price: <span th:text="${stockData.currentPrice}"></span></p>
+    <p>High Price: <span th:text="${stockData.highPrice}"></span></p>
+    <p>Low Price: <span th:text="${stockData.lowPrice}"></span></p>
+    <p>Open Price: <span th:text="${stockData.openingPrice}"></span></p>
+    <p>Previous Close Price: <span th:text="${stockData.previousClosePrice}"></span></p>
+    <a href="/api/stocks/">Back to List</a>
+</body>
+</html>
