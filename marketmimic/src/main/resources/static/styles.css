@@ -9,18 +9,18 @@ body{
     min-height: 100vh; 
     overflow: hidden;
     background-image: linear-gradient(
-        270deg,
-        hsl(230deg 33% 21%) 0%,
-        hsl(230deg 32% 21%) 21%,
-        hsl(229deg 31% 21%) 30%,
-        hsl(229deg 29% 22%) 39%,
-        hsl(229deg 28% 22%) 46%,
-        hsl(229deg 27% 22%) 54%,
-        hsl(229deg 25% 23%) 61%,
-        hsl(229deg 24% 23%) 69%,
-        hsl(229deg 23% 23%) 79%,
-        hsl(228deg 22% 24%) 100%
-      );
+  180deg,
+  hsl(230deg 33% 21%) 0%,
+  hsl(230deg 32% 21%) 11%,
+  hsl(230deg 31% 21%) 30%,
+  hsl(229deg 30% 21%) 39%,
+  hsl(229deg 29% 22%) 46%,
+  hsl(229deg 27% 22%) 54%,
+  hsl(229deg 26% 22%) 61%,
+  hsl(229deg 25% 22%) 69%,
+  hsl(229deg 24% 23%) 79%,
+  hsl(229deg 23% 23%) 100%
+);
 
 }
 
