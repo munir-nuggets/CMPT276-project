@@ -11,7 +11,7 @@ import cmpt276.project.marketmimic.model.UserRepository;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.Map;
-
+import java.util.Optional;
 
  
 @Controller
@@ -34,6 +34,36 @@ public class loginController {
     @GetMapping("/userlogin")
     public String userLogin(@RequestBody String entity) {
         return "homepage";
+    }
+     
+    @GetMapping("/stocklist")
+    public String stock_page(){
+        return "stocklist";
+    }
+
+    @PostMapping("/userlogin")
+    public String userLogin(@RequestParam Map<String, String> loginData){
+        String usernameOrEmail = loginData.get("usernameOrEmail");
+        String password = loginData.get("password");
+
+        Optional<User> userOpt = userRepo.findByUsername(usernameOrEmail);
+        if(!userOpt.isPresent()){
+            userOpt = userRepo.findByEmail(usernameOrEmail);
+            if(!userOpt.isPresent()){
+                userOpt = userRepo.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail);
+            }
+        }
+        if(userOpt.isPresent() && userOpt.get().getPassword().equals(password)){
+           return "redirect:/stocklist";
+        }
+        else{
+           return "redirect:/userlogin";
+        }
+    }
+
+    @PostMapping("/logout")
+    public String logout(){
+        return "redirect:/userlogin";
     }
 
     @RequestMapping("home")
