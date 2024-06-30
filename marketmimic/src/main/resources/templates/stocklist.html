@@ -4,9 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stock Symbols</title>
+    <style>
+        .topnav-right {
+          float: right;
+        }
+    </style>
 </head>
 <body>
     <h1>List of Stock Symbols</h1>
+    <div class="topnav-right">
+    <form action = "/logout" method = "post">
+        <button type = "submit" id >Logout</button>
+    </form>
+    </div>
     <ul>
         <li th:each="symbol : ${symbols}">
             <a th:href="@{/api/stocks/price(symbol=${symbol.symbol})}" th:text="${symbol.description} + ' (' + ${symbol.symbol} + ')'"></a>
