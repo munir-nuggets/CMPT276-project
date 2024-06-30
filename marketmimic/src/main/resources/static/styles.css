@@ -1,11 +1,95 @@
-#hero-test{
-    color: red;
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+
+body{
+    background-color: #232946
 }
 
-.hero-subtext{
-    color: blue;
+.auth-body{
+    min-height: 100vh; 
+    overflow: hidden;
+    background-image: linear-gradient(
+  180deg,
+  hsl(230deg 33% 21%) 0%,
+  hsl(230deg 32% 21%) 11%,
+  hsl(230deg 31% 21%) 30%,
+  hsl(229deg 30% 21%) 39%,
+  hsl(229deg 29% 22%) 46%,
+  hsl(229deg 27% 22%) 54%,
+  hsl(229deg 26% 22%) 61%,
+  hsl(229deg 25% 22%) 69%,
+  hsl(229deg 24% 23%) 79%,
+  hsl(229deg 23% 23%) 100%
+);
+
 }
 
-#login-hero{
-    color: green;
+#signup-form{
+    color: #fffffe;
+}
+
+#hero-text{
+    font-family: "Montserrat", sans-serif;
+    font-weight: 300;
+}
+
+#homepage-body {
+    background-image: linear-gradient(
+        180deg,
+        hsl(230deg 33% 21%) 0%,
+        hsl(230deg 32% 21%) 11%,
+        hsl(230deg 31% 21%) 30%,
+        hsl(229deg 30% 21%) 39%,
+        hsl(229deg 29% 22%) 46%,
+        hsl(229deg 27% 22%) 54%,
+        hsl(229deg 26% 22%) 61%,
+        hsl(229deg 25% 22%) 69%,
+        hsl(229deg 24% 23%) 79%,
+        hsl(229deg 23% 23%) 100%
+      );
+      
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+#homepage-title {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 700;
+    color: #fffffe;
+    font-size: 3rem;
+    line-height: 1.2;
+    
+}
+
+#homepage-desc {
+    font-family: "Roboto", sans-serif;
+    font-weight: 300;
+    color: #fffffe;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.btn-custom {
+    background-color: #eebbc3; 
+    color: #232946;
+    border: none; 
+}
+.btn-custom:hover {
+    background-color: #fffffe; 
+    color: #232946; 
+}
+.btn-lg {
+    font-size: 1.25rem;
+    padding: 0.75rem 1.25rem;
+}
+.text-container {
+    text-align: center;
+}
+
+.icon {
+   height: auto;
+   margin-bottom: 10px; 
 }
