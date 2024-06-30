@@ -24,7 +24,7 @@ public class loginController {
     public String userSignup(@RequestParam Map<String, String> entity) {
         String username = entity.get("username");
         
-        if(userNameIsTaken(username)){
+        if(usernameIsTaken(username)){
             return "usernameIsTaken";
         }
 
@@ -35,7 +35,7 @@ public class loginController {
         return "homepage";
     }
     
-    public Boolean userNameIsTaken(String username){
+    public Boolean usernameIsTaken(String username){
         if(userRepo.findByUsername(username).isEmpty()){
             return false;
         }
