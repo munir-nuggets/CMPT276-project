@@ -33,13 +33,11 @@ public class loginController {
 
     @GetMapping("/userlogin")
     public String userLogin(@RequestBody String entity) {
-        
         return "homepage";
     }
+
     @RequestMapping("home")
     public String homepage() {
         return "/homepage";
     }
-    
-    
 }
