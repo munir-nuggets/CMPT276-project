@@ -21,12 +21,29 @@ public class loginController {
     @PostMapping("/usersignup")
     public String userSignup(@RequestParam Map<String, String> entity) {
         String username = entity.get("username");
+        
+        if(usernameIsTaken(username)){
+            return "usernameIsTaken";
+        }
+
         String password = entity.get("password");
         String email = entity.get("email");
         User user = new User(username, email, password);
         userRepo.save(user);
         return "homepage";
     }
+    
+    public Boolean usernameIsTaken(String username){
+        if(userRepo.findByUsername(username).isEmpty()){
+            return false;
+        }
+        return true;
+    }
+
+    @GetMapping("/userlogin")
+    public String userLogin(@RequestBody String entity) {
+        
+        return "homepage";
 
     @PostMapping("/userlogin")
     public String userLogin(@RequestParam Map<String, String> loginData){
