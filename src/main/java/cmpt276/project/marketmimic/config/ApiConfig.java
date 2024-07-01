@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConfigurationProperties(prefix = "finnhub")
 public class ApiConfig {
-    private String apiKey = "cpma4jhr01quf620pvkgcpma4jhr01quf620pvl0";
+    private String apiKey = "cq1jlm1r01qjh3d5pt90cq1jlm1r01qjh3d5pt9g";
 
     public String getApiKey() {
         return apiKey;
