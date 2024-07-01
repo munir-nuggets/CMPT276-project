@@ -21,15 +21,14 @@ public class loginController {
     @PostMapping("/usersignup")
     public String userSignup(@RequestParam Map<String, String> entity) {
         String username = entity.get("username");
+        String email = entity.get("email");
+        String password = entity.get("password");
         
         if(usernameIsTaken(username)){
             return "usernameIsTaken";
-        } else if (emailIsTaken(username)) {
+        } else if (emailIsTaken(email)) {
             return "emailIsTaken";
         }
-
-        String password = entity.get("password");
-        String email = entity.get("email");
         User user = new User(username, email, password);
         userRepo.save(user);
         return "homepage";
