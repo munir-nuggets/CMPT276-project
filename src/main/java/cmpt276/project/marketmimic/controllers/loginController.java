@@ -24,6 +24,8 @@ public class loginController {
         
         if(usernameIsTaken(username)){
             return "usernameIsTaken";
+        } else if (emailIsTaken(username)) {
+            return "emailIsTaken";
         }
 
         String password = entity.get("password");
@@ -34,7 +36,14 @@ public class loginController {
     }
     
     public Boolean usernameIsTaken(String username){
-        if(userRepo.findByUsername(username).isEmpty()){
+        if (userRepo.findByUsername(username).isEmpty()){
+            return false;
+        }
+        return true;
+    }
+
+    public Boolean emailIsTaken(String email) {
+        if (userRepo.findByEmail(email).isEmpty()) {
             return false;
         }
         return true;
