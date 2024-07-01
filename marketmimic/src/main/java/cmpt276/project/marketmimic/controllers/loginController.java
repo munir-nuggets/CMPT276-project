@@ -40,16 +40,10 @@ public class loginController {
         return true;
     }
 
-    @GetMapping("/userlogin")
-    public String userLogin(@RequestBody String entity) {
-        
-        return "homepage";
-
     @PostMapping("/userlogin")
     public String userLogin(@RequestParam Map<String, String> loginData){
         String usernameOrEmail = loginData.get("usernameOrEmail");
         String password = loginData.get("password");
-
         Optional<User> userOpt = userRepo.findByUsername(usernameOrEmail);
         if(!userOpt.isPresent()){
             userOpt = userRepo.findByEmail(usernameOrEmail);
