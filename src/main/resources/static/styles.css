@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
 
 
 body{
@@ -74,6 +75,8 @@ body{
 
 .btn-custom {
     background-color: #eebbc3; 
+    font-family: "Montserrat", sans-serif;
+    font-weight: 500;
     color: #232946;
     border: none; 
 }
@@ -110,15 +113,6 @@ body{
     margin-right: 5px; 
 }
 
-.topnav-right .btn-danger {
-    background-color: #eebbc3; 
-    border-color: #eebbc3; 
-    color: #232946;
-    font-family: "Montserrat", sans-serif;
-    font-weight: 600;
-
-}
-
 .navbar-custom .navbar-brand:hover {
     text-decoration: none; 
 }
@@ -133,10 +127,10 @@ body{
 
 
 #stock-details{
-    background-color: #fffffe;
-    font-family: "Roboto", sans-serif;
-    font-weight: 400;
-    color: #232946;
+    background-color: #b8c1ec;
+    font-family: "Lato", sans-serif;
+    font-weight: 600;
+    color: #121629;
     font-size: 1rem;
     line-height: 1.5;
 }
@@ -147,5 +141,8 @@ body{
     color: #232946;
 }
 
-
+#return{
+    background-color: #121629;
+    color: #fffffe
+}
 

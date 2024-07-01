@@ -19,7 +19,7 @@
 
         <div class="topnav-right p-3 mb-3">
             <form action="/logout" method="post">
-                <button type="submit" class="btn btn-danger">Log out</button>
+                <button type="submit" class="btn btn-custom ">Log out</button>
             </form>
         </div>
 
@@ -33,10 +33,12 @@
                 <p class="card-text">Low Price: $<span th:text="${stockData.lowPrice}"></span></p>
                 <p class="card-text">Open Price: $<span th:text="${stockData.openingPrice}"></span></p>
                 <p class="card-text">Previous Close Price: $<span th:text="${stockData.previousClosePrice}"></span></p>
-                <a href="/api/stocks/" class="btn btn-primary">Back to List</a>
+                <a id ="return" class= "btn btn-custom btn-lg m-2 mt-2" href="/api/stocks/" >Back to List</a>
             </div>
         </div>
     </main>
     
+    
+
 </body>
 </html>
