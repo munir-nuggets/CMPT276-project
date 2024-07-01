@@ -66,10 +66,10 @@ public class loginController {
 
     @PostMapping("/logout")
     public String logout(){
-        return "redirect:/home";
+        return "redirect:/";
     }
 
-    @RequestMapping("home")
+    @RequestMapping("/")
     public String homepage() {
         return "homepage";
     }
