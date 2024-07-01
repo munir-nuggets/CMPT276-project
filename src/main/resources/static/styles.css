@@ -120,7 +120,6 @@ body{
 }
 
 .navbar-custom .navbar-brand:hover {
-    background-color: #ffffff; 
     text-decoration: none; 
 }
 
@@ -131,3 +130,22 @@ body{
     font-size: 2rem;
     line-height: 1.2;
 }
+
+
+#stock-details{
+    background-color: #b8c1ec;
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    color: #232946;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+#stock-title{
+    font-family: "montserrat", sans-serif;
+    font-weight: 700;
+    color: #232946;
+}
+
+
+
