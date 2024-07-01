@@ -72,6 +72,6 @@ public class apiController {
         StockData stockData = restTemplate.getForObject(quoteUrl, StockData.class);
         model.addAttribute("symbol", symbol);
         model.addAttribute("stockData", stockData);
-        return "/stocksymbol";
+        return "stocksymbol";
     }
 }
