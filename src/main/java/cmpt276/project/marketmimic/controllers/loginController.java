@@ -63,6 +63,6 @@ public class loginController {
 
     @RequestMapping("home")
     public String homepage() {
-        return "/homepage";
+        return "homepage";
     }
 }
