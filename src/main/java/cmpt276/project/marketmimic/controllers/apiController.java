@@ -34,7 +34,7 @@ public class apiController {
     //
     @GetMapping("/prices")
     public Map<String, Object> getStockPrices(@RequestParam String exchange) {
-        String symbolsUrl = "https://finnhub.io/api/v1/stock/symbol?exchange=" + exchange + "&token=" + apiConfig.getApiKey();
+        String symbolsUrl = "https://finnhub.io/api/v1/stock/symbol?exchange=" + exchange + "&token=" + apiConfig.getFinnhubApiKey();
         ResponseEntity<List<Map<String, Object>>> symbolsResponse = restTemplate.exchange(
                 symbolsUrl, HttpMethod.GET, null, new ParameterizedTypeReference<>() {});
         List<String> symbols = symbolsResponse.getBody().stream()
@@ -43,7 +43,7 @@ public class apiController {
 
         Map<String, Object> stockPrices = new HashMap<>();
         for (String symbol : symbols) {
-            String quoteUrl = "https://finnhub.io/api/v1/quote?symbol=" + symbol + "&token=" + apiConfig.getApiKey();
+            String quoteUrl = "https://finnhub.io/api/v1/quote?symbol=" + symbol + "&token=" + apiConfig.getFinnhubApiKey();
             @SuppressWarnings("unchecked")
             Map<String, Object> quote = restTemplate.getForObject(quoteUrl, Map.class);
             stockPrices.put(symbol, quote);
@@ -53,14 +53,15 @@ public class apiController {
 
     @GetMapping("/")
     public String getStockSymbols(Model model) {
-        String symbolsUrl = "https://finnhub.io/api/v1/stock/symbol?exchange=US&token=" + apiConfig.getApiKey();
-        ResponseEntity<List<StockSymbol>> response = restTemplate.exchange(
+        String symbolsUrl = "https://api.polygon.io/v3/reference/tickers?type=CS&market=stocks&exchange=XNAS&active=true&limit=1000&sort=ticker&apiKey=" + apiConfig.getPolygonApiKey();
+        ResponseEntity<PolygonResponse> response = restTemplate.exchange(
                 symbolsUrl,
                 HttpMethod.GET,
                 null,
-                new ParameterizedTypeReference<List<StockSymbol>>() {}
+                PolygonResponse.class
         );
-        List<StockSymbol> symbolsResponse = response.getBody();
+        PolygonResponse polygonResponse = response.getBody();
+        List<StockSymbol> symbolsResponse = polygonResponse != null ? polygonResponse.getTickers() : Collections.emptyList();
         Collections.sort(symbolsResponse, Comparator.comparing(StockSymbol::getDescription));
         model.addAttribute("symbols", symbolsResponse);
         return "stocklist";
@@ -68,7 +69,7 @@ public class apiController {
 
     @GetMapping("/price")
     public String getStockPrice(@RequestParam String symbol, Model model) {
-        String quoteUrl = "https://finnhub.io/api/v1/quote?symbol=" + symbol + "&token=" + apiConfig.getApiKey();
+        String quoteUrl = "https://finnhub.io/api/v1/quote?symbol=" + symbol + "&token=" + apiConfig.getFinnhubApiKey();
         StockData stockData = restTemplate.getForObject(quoteUrl, StockData.class);
         model.addAttribute("symbol", symbol);
         model.addAttribute("stockData", stockData);

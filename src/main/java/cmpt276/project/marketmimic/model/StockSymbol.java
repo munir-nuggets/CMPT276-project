@@ -1,7 +1,11 @@
 package cmpt276.project.marketmimic.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class StockSymbol {
+    @JsonProperty("ticker")
     private String symbol;
+    @JsonProperty("name")
     private String description;
 
     public String getSymbol() {
