@@ -146,3 +146,26 @@ body{
     color: #fffffe
 }
 
+#admin-dashboard{
+    background-color: #b8c1ec;
+    font-family: "Lato", sans-serif;
+    font-weight: 600;
+    color: #121629;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+#admin-dashboard-title{
+    color:#121629;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 700;
+    font-size: 2rem;
+    line-height: 1.2;
+}
+
+#users-title{
+    color:#121629;
+    font-family: "lato", sans-serif;
+    font-weight: 700;
+    line-height: 1.2;
+}
