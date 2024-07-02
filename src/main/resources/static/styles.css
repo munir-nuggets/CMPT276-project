@@ -169,3 +169,13 @@ body{
     font-weight: 700;
     line-height: 1.2;
 }
+
+.footer {
+    background-color: #121629 !important;
+    color: #fffffe !important;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 60px;
+    text-align: center;
+}
