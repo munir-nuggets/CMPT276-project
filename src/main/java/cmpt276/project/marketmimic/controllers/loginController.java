@@ -1,13 +1,19 @@
 package cmpt276.project.marketmimic.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import cmpt276.project.marketmimic.model.User;
 import cmpt276.project.marketmimic.model.UserRepository;
 
+// For getmapping
+import org.springframework.ui.Model;
+
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -17,6 +23,19 @@ public class loginController {
 
     @Autowired
     private UserRepository userRepo;
+    // for testing
+
+    @GetMapping("/allusers")
+    public String getAllUsers(Model model) {
+        System.out.println("Getting all users");
+        
+        List<User> users = userRepo.findAll();
+        // end of database call
+
+        // rects represents rectangles
+        model.addAttribute("users", users);
+        return "showAllUsers";
+    }
 
     @PostMapping("/usersignup")
     public String userSignup(@RequestParam Map<String, String> entity) {
@@ -68,7 +87,20 @@ public class loginController {
     public String logout(){
         return "redirect:/";
     }
-
+    @PostMapping("/resetpassword")
+    public String resetPassword(@RequestParam Map<String, String> entity){
+        String email = entity.get("email");
+        String newPassword = entity.get("newPassword");
+        Optional<User> userOpt = userRepo.findByEmail(email);
+        if(userOpt.isPresent()){
+            userOpt.get().setPassword(newPassword);
+            userRepo.save(userOpt.get());
+            return "homepage";
+         }
+        else{
+            return "noUserHasThatEmail";
+        }
+    }
     @RequestMapping("/")
     public String homepage() {
         return "homepage";
