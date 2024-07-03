@@ -78,7 +78,7 @@ public class loginController {
         }
         if (userOpt.isPresent() && userOpt.get().getPassword().equals(password)){
             Optional<Role> roleOpt = roleRepo.findByUsername(userOpt.get().getUsername());
-            if (roleOpt.get().getRoleName().equals("admin")) {
+            if (roleOpt.isPresent() && roleOpt.get().getRoleName().equals("admin")) {
                 return "redirect:/admin/dashboard";
             }
             return "redirect:/api/stocks/";
