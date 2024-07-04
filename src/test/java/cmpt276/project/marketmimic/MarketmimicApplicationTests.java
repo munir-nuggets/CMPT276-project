@@ -16,14 +16,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import org.hamcrest.Matchers;
-
-import static org.hamcrest.Matchers.*;
 
 import cmpt276.project.marketmimic.controllers.loginController;
 import cmpt276.project.marketmimic.model.*;

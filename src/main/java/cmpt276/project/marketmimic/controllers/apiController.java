@@ -53,6 +53,9 @@ public class apiController {
 
     @GetMapping("/")
     public String getStockSymbols(Model model) {
+        if (!loginController.isLoggedIn) {
+            return "redirect:/";
+        }
         String symbolsUrl = "https://finnhub.io/api/v1/stock/symbol?exchange=US&token=" + apiConfig.getApiKey();
         ResponseEntity<List<StockSymbol>> response = restTemplate.exchange(
                 symbolsUrl,
@@ -68,6 +71,9 @@ public class apiController {
 
     @GetMapping("/price")
     public String getStockPrice(@RequestParam String symbol, Model model) {
+        if (!loginController.isLoggedIn) {
+            return "redirect:/";
+        }
         String quoteUrl = "https://finnhub.io/api/v1/quote?symbol=" + symbol + "&token=" + apiConfig.getApiKey();
         StockData stockData = restTemplate.getForObject(quoteUrl, StockData.class);
         model.addAttribute("symbol", symbol);

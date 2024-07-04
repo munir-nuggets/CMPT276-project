@@ -14,11 +14,16 @@ import cmpt276.project.marketmimic.model.*;
 @RequestMapping("/admin")
 public class adminController {
 
+    public static boolean isAdmin = false;
+
     @Autowired
     private UserRepository userRepo;
 
     @GetMapping("/dashboard")
     public String adminDashboard(Model model) {
+        if (!loginController.isLoggedIn || !isAdmin) {
+            return "redirect:/";
+        }
         List<User> users = userRepo.findAll();
         model.addAttribute("users", users);
         return "admindashboard";

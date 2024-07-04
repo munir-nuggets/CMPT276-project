@@ -1,5 +1,6 @@
 package cmpt276.project.marketmimic.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,10 +19,14 @@ import java.util.List;
 @Controller
 public class loginController {
 
+    public static boolean isLoggedIn = false;
+
     @Autowired
     private UserRepository userRepo;
     @Autowired
     private RoleRepository roleRepo;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @PostMapping("/usersignup")
     public String userSignup(@RequestParam Map<String, String> entity) {
@@ -34,7 +39,10 @@ public class loginController {
         } else if (emailIsTaken(email)) {
             return "emailIsTaken";
         }
-        User user = new User(username, email, password);
+        User user = new User();
+        user.setUsername(username);
+        user.setEmail(email);
+        user.setPassword(passwordEncoder.encode(password));
         userRepo.save(user);
         Role role = new Role(username, "user");
         roleRepo.save(role);
@@ -76,11 +84,14 @@ public class loginController {
         if (!userOpt.isPresent()){
             userOpt = userRepo.findByEmail(usernameOrEmail);
         }
-        if (userOpt.isPresent() && userOpt.get().getPassword().equals(password)){
+        if (userOpt.isPresent() && passwordEncoder.matches(password, userOpt.get().getPassword())){
             Optional<Role> roleOpt = roleRepo.findByUsername(userOpt.get().getUsername());
             if (roleOpt.isPresent() && roleOpt.get().getRoleName().equals("admin")) {
+                isLoggedIn = true;
+                adminController.isAdmin = true;
                 return "redirect:/admin/dashboard";
             }
+            isLoggedIn = true;
             return "redirect:/api/stocks/";
         }
         else {
@@ -90,6 +101,8 @@ public class loginController {
 
     @PostMapping("/logout")
     public String logout(){
+        isLoggedIn = false;
+        adminController.isAdmin = false;
         return "redirect:/";
     }
 
