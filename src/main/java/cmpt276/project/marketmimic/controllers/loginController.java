@@ -5,8 +5,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import cmpt276.project.marketmimic.model.User;
-import cmpt276.project.marketmimic.model.Role;
-import cmpt276.project.marketmimic.model.RoleRepository;
 import cmpt276.project.marketmimic.model.UserRepository;
 
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,8 +18,6 @@ public class loginController {
 
     @Autowired
     private UserRepository userRepo;
-    @Autowired
-    private RoleRepository roleRepo;
 
     @PostMapping("/usersignup")
     public String userSignup(@RequestParam Map<String, String> entity) {
@@ -36,8 +32,6 @@ public class loginController {
         }
         User user = new User(username, email, password);
         userRepo.save(user);
-        Role role = new Role(username, "user");
-        roleRepo.save(role);
         return "homepage";
     }
     
@@ -56,16 +50,11 @@ public class loginController {
     }
 
     public void createAdminIfDoesntExist() {
-        List<Role> roles = roleRepo.findAll();
-        for (Role role : roles) {
-            if (role.getRoleName().equals("admin")) {
-                return;
-            }
+        List<User> users = userRepo.findAllByIsadmin(true);
+        if (users.isEmpty()){ 
+            User user = new User("admin", "admin", "admin", true);
+            userRepo.save(user);
         }
-        User user = new User("admin", "admin", "admin");
-        userRepo.save(user);
-        Role role = new Role("admin", "admin");
-        roleRepo.save(role);
     }
 
     @PostMapping("/userlogin")
@@ -75,17 +64,17 @@ public class loginController {
         Optional<User> userOpt = userRepo.findByUsername(usernameOrEmail);
         if (!userOpt.isPresent()){
             userOpt = userRepo.findByEmail(usernameOrEmail);
-        }
+        } 
         if (userOpt.isPresent() && userOpt.get().getPassword().equals(password)){
-            Optional<Role> roleOpt = roleRepo.findByUsername(userOpt.get().getUsername());
-            if (roleOpt.isPresent() && roleOpt.get().getRoleName().equals("admin")) {
+            User user = userOpt.get();
+            if (user.isIsadmin()) {
                 return "redirect:/admin/dashboard";
+            } else {
+                return "redirect:/api/stocks/";
             }
-            return "redirect:/api/stocks/";
         }
-        else {
-            return "invalidlogin";
-        }
+
+        return "invalidLogin";
     }
 
     @PostMapping("/logout")

@@ -16,14 +16,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import org.hamcrest.Matchers;
-
-import static org.hamcrest.Matchers.*;
 
 import cmpt276.project.marketmimic.controllers.loginController;
 import cmpt276.project.marketmimic.model.*;
@@ -35,9 +31,6 @@ class MarketmimicApplicationTests {
 
 	@MockBean
 	UserRepository userRepo;
-
-	@MockBean
-	RoleRepository roleRepo;
 
 	@Autowired
 	private MockMvc mockMvc;
@@ -59,7 +52,6 @@ class MarketmimicApplicationTests {
 		for (User user : users) {
 			when(userRepo.findByUsername(user.getUsername())).thenReturn(Optional.of(user));
 			when(userRepo.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
-			when(roleRepo.findByUsername(user.getUsername())).thenReturn(Optional.of(new Role(user.getUsername(), "user")));
 		}
 
 
@@ -89,33 +81,32 @@ class MarketmimicApplicationTests {
 		for (User user : users) {
 			when(userRepo.findByUsername(user.getUsername())).thenReturn(Optional.of(user));
 			when(userRepo.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
-			when(roleRepo.findByUsername(user.getUsername())).thenReturn(Optional.of(new Role(user.getUsername(), "user")));
 		}
 
 		mockMvc.perform(MockMvcRequestBuilders.post("/userlogin")
 				.param("usernameOrEmail", "alice")
 				.param("password", "password2"))
 				.andExpect(MockMvcResultMatchers.status().isOk())
-				.andExpect(MockMvcResultMatchers.view().name("invalidlogin"));
+				.andExpect(MockMvcResultMatchers.view().name("invalidLogin"));
 
 		mockMvc.perform(MockMvcRequestBuilders.post("/userlogin")
 		.param("usernameOrEmail", "bob@gmail.com")
 				.param("password", "password1"))
 				.andExpect(MockMvcResultMatchers.status().isOk())
-				.andExpect(MockMvcResultMatchers.view().name("invalidlogin"));
+				.andExpect(MockMvcResultMatchers.view().name("invalidLogin"));
 
 		mockMvc.perform(MockMvcRequestBuilders.post("/userlogin")
 		.param("usernameOrEmail", "random")
 				.param("password", "password1"))
 				.andExpect(MockMvcResultMatchers.status().isOk())
-				.andExpect(MockMvcResultMatchers.view().name("invalidlogin"));
+				.andExpect(MockMvcResultMatchers.view().name("invalidLogin"));
 	}
 
 	@Test
 	void testLoginAdmin() throws Exception {
 		List<User> users = new ArrayList<>();
 
-		User user1 = new User("alice", "alice@example.com", "password1");
+		User user1 = new User("alice", "alice@example.com", "password1", true);
         users.add(user1);
 
         User user2 = new User("bob", "bob@example.com", "password2");
@@ -125,9 +116,6 @@ class MarketmimicApplicationTests {
 			when(userRepo.findByUsername(user.getUsername())).thenReturn(Optional.of(user));
 			when(userRepo.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
 		}
-		
-		when(roleRepo.findByUsername("alice")).thenReturn(Optional.of(new Role("alice", "admin")));
-		when(roleRepo.findByUsername("bob")).thenReturn(Optional.of(new Role("bob", "user")));
 
 		mockMvc.perform(MockMvcRequestBuilders.post("/userlogin")
 				.param("usernameOrEmail", "alice")
@@ -151,12 +139,6 @@ class MarketmimicApplicationTests {
             "test@example.com".equals(user.getEmail()) &&
             "password".equals(user.getPassword())
    		));
-
-    	// Verify that the roleRepo.save method was called
-		verify(roleRepo, times(1)).save(argThat(role ->
-				"testuser".equals(role.getUsername()) &&
-				"user".equals(role.getRoleName())
-		));
 	}
 
 	@Test
