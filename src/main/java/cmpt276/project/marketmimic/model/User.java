@@ -11,12 +11,28 @@ public class User {
     private String username;
     private String email;
     private String password;
+    private Boolean isadmin;
     public User() {
     }
     public User(String username, String email, String password) {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.isadmin = false;
+    }
+    public User(String username, String email, String password, boolean isAdmin) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.isadmin = isAdmin;
+    }
+
+    public boolean isIsadmin() {
+        return isadmin;
+    }
+
+    public void setIsadmin(boolean admin) {
+        isadmin = admin;
     }
     public String getUsername() {
         return username;
