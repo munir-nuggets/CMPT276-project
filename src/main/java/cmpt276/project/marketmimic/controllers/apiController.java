@@ -15,7 +15,8 @@ import org.springframework.web.client.RestTemplate;
 
 import org.springframework.ui.Model;
 import cmpt276.project.marketmimic.config.ApiConfig;
-import cmpt276.project.marketmimic.model.*;;
+import cmpt276.project.marketmimic.model.*;
+import jakarta.servlet.http.HttpSession;;
 
 @Controller
 @RequestMapping("/api/stocks")
@@ -35,8 +36,11 @@ public class apiController {
     @GetMapping("/prices")
     public Map<String, Object> getStockPrices(@RequestParam String exchange) {
         String symbolsUrl = "https://finnhub.io/api/v1/stock/symbol?exchange=" + exchange + "&token=" + apiConfig.getApiKey();
-        ResponseEntity<List<Map<String, Object>>> symbolsResponse = restTemplate.exchange(
-                symbolsUrl, HttpMethod.GET, null, new ParameterizedTypeReference<>() {});
+        ResponseEntity<List<Map<String, Object>>> symbolsResponse = restTemplate.exchange(symbolsUrl, 
+            HttpMethod.GET,
+            null, 
+            new ParameterizedTypeReference<>() {});
+
         List<String> symbols = symbolsResponse.getBody().stream()
                 .map(symbol -> symbol.get("symbol").toString())
                 .collect(Collectors.toList());
@@ -52,7 +56,11 @@ public class apiController {
     }
 
     @GetMapping("/")
-    public String getStockSymbols(Model model) {
+    public String getStockSymbols(Model model, HttpSession session) {
+        User user = (User) session.getAttribute("session_user");
+        if(user == null) return "redirect:/login.html";
+        model.addAttribute("user", user);
+
         String symbolsUrl = "https://finnhub.io/api/v1/stock/symbol?exchange=US&token=" + apiConfig.getApiKey();
         ResponseEntity<List<StockSymbol>> response = restTemplate.exchange(
                 symbolsUrl,

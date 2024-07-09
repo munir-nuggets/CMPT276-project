@@ -179,3 +179,11 @@ body{
     height: 60px;
     text-align: center;
 }
+
+#greeting{
+    font-family: "Montserrat", sans-serif;
+    font-weight: 700;
+    color: #fffffe;
+    font-size: 1rem;
+    line-height: 1.2;
+}
