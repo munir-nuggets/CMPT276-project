@@ -70,7 +70,10 @@ public class loginController {
                 return;
             }
         }
-        User user = new User("admin", "admin", "admin");
+        User user = new User();
+        user.setUsername("admin");
+        user.setEmail("admin");
+        user.setPassword(passwordEncoder.encode("admin"));
         userRepo.save(user);
         Role role = new Role("admin", "admin");
         roleRepo.save(role);
