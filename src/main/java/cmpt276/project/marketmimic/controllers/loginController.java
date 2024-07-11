@@ -67,7 +67,7 @@ public class loginController {
             model.addAttribute("user", user);
             String endpoint = user.isIsadmin() ? "redirect:/admin/dashboard" : "redirect:/api/stocks/";
             return endpoint;
-        } 
+        }
         else {
             return "invalidLogin";
         }
