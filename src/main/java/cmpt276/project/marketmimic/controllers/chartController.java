@@ -11,12 +11,12 @@ import cmpt276.project.marketmimic.model.StockDataResponse;
 import java.io.IOException;
 
 @Controller
-public class StockController {
+public class chartController {
 
     private final PolygonService polygonService;
     private final ChartService chartService;
 
-    public StockController(PolygonService polygonService, ChartService chartService) {
+    public chartController(PolygonService polygonService, ChartService chartService) {
         this.polygonService = polygonService;
         this.chartService = chartService;
     }
