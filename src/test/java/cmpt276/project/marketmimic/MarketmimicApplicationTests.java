@@ -106,7 +106,7 @@ class MarketmimicApplicationTests {
 	void testLoginAdmin() throws Exception {
 		List<User> users = new ArrayList<>();
 
-		User user1 = new User("alice", "alice@example.com", "password1", true);
+		User user1 = new User("alice", "alice@example.com", "password1", true, 0);
         users.add(user1);
 
         User user2 = new User("bob", "bob@example.com", "password2");

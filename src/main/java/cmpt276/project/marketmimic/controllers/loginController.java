@@ -17,7 +17,7 @@ import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
 
 
- 
+
 @Controller
 public class loginController {
 
@@ -51,7 +51,7 @@ public class loginController {
         else {
             model.addAttribute("user", user);
             String endpoint = user.isIsadmin() ? "redirect:/admin/dashboard" : "redirect:/api/stocks/";
-            return endpoint; 
+            return endpoint;
         }
     }
 
@@ -102,7 +102,7 @@ public class loginController {
     public void createAdminIfDoesntExist() {
         List<User> users = userRepo.findAllByIsadmin(true);
         if (users.isEmpty()){ 
-            User user = new User("admin", "admin", "admin", true);
+            User user = new User("admin", "admin", "admin", true, 0);
             userRepo.save(user);
         }
     }
