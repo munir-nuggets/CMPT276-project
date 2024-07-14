@@ -12,6 +12,7 @@ public class User {
     private String email;
     private String password;
     private Boolean isadmin;
+    private Integer usd;
     public User() {
     }
     public User(String username, String email, String password) {
@@ -19,12 +20,14 @@ public class User {
         this.email = email;
         this.password = password;
         this.isadmin = false;
+        this.usd = Integer.valueOf(100);
     }
     public User(String username, String email, String password, boolean isAdmin) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.isadmin = isAdmin;
+        this.usd = Integer.valueOf(100);
     }
 
     public boolean isIsadmin() {
