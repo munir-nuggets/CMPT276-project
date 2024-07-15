@@ -16,8 +16,17 @@
         <h1 id="hero-text" class="text-center text-white mt-5">MarketMimic</h1>
     </a>
 
-    <h1>You have <span th:text="${usd}">Money</span>!</h1>
+    <h1 class="text-center text-white mt-5">You have $<span th:text="${usd}"></span>!</h1>
 
+    <form action="/addcurrency" method="post">
+        <div class="form-group mb-3">
+            <input type="text" id="amount" name="amount" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Add Money</button>
+    </form>
+
+    <br><br>
+    <button onclick="window.location.href='/api/stocks/'">Go to back to Stock List</button>
     <footer class="footer mt-auto py-3 bg-light">
         <div class="container text-center">
             <span class="">© 2024 MarketMimic</span>

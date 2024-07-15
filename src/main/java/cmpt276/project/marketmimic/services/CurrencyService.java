@@ -14,7 +14,7 @@ public class CurrencyService {
     @Autowired
     private UserRepository userRepository;
 
-    public void addCurrency(String username, int amount) {
+    public void addCurrency(String username, double amount) {
         Optional<User> userOpt = userRepository.findByUsername(username);
         if (userOpt.get() != null) {
             userOpt.get().setUsd(userOpt.get().getUsd() + amount);
@@ -22,11 +22,11 @@ public class CurrencyService {
         }
     }
 
-    public int getCurrencyBalance(String username) {
+    public Double getCurrencyBalance(String username) {
         Optional<User> userOpt = userRepository.findByUsername(username);
         if (userOpt.get() != null) {
             return userOpt.get().getUsd();
         }
-        return 0;
+        return Double.valueOf(0);
     }
 }

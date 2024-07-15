@@ -1,5 +1,7 @@
 package cmpt276.project.marketmimic.controllers;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -18,15 +20,21 @@ public class CurrencyController {
     private CurrencyService currencyService;
 
     @PostMapping("/addcurrency")
-    public String addCurrency(@RequestParam String username, @RequestParam int amount) {
-        currencyService.addCurrency(username, amount);
-        return "redirect:/currencyscreen";
+    public String addCurrency(@RequestParam Map<String, String> currencyData, HttpSession session) {
+        User user = (User) session.getAttribute("session_user");
+        if (user == null){
+            return "redirect:/login.html";
+        }
+        else {
+            currencyService.addCurrency(user.getUsername(), Double.parseDouble(currencyData.get("amount")));
+            return "redirect:/currencyscreen";
+        }
     }
 
     
     @GetMapping("/balance")
-    public ResponseEntity<Integer> getCurrencyBalance(@RequestParam String username) {
-        int balance = currencyService.getCurrencyBalance(username);
+    public ResponseEntity<Double> getCurrencyBalance(@RequestParam String username) {
+        Double balance = currencyService.getCurrencyBalance(username);
         return ResponseEntity.ok(balance);
     }
 
@@ -34,7 +42,7 @@ public class CurrencyController {
     public String currencyscreen(Model model, HttpSession session) {
         User user = (User) session.getAttribute("session_user");
         if (user != null) {
-            model.addAttribute("usd", user.getUsd());
+            model.addAttribute("usd", currencyService.getCurrencyBalance(user.getUsername()));
             // Add other user attributes as needed
             return "currencyscreen";
         }
