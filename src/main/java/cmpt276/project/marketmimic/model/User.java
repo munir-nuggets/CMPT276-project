@@ -13,6 +13,11 @@ public class User {
     private String password;
     private Boolean isadmin;
     private Double usd;
+
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private java.util.List<PasswordResetToken> passwordResetTokens;
+
     public User() {
     }
     public User(String username, String email, String password) {
