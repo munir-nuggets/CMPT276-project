@@ -33,6 +33,7 @@
                 <p class="card-text">Low Price: $<span th:text="${stockData.lowPrice}"></span></p>
                 <p class="card-text">Open Price: $<span th:text="${stockData.openingPrice}"></span></p>
                 <p class="card-text">Previous Close Price: $<span th:text="${stockData.previousClosePrice}"></span></p>
+                <p class="card-text">Your current balance: $<span th:text="${usd}"></span></p>
                 <a id ="return" class= "btn btn-custom btn-lg m-2 mt-2" href="/api/stocks/" >Back to List</a>
             </div>
         </div>
