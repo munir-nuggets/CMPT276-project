@@ -46,7 +46,7 @@ public class CurrencyController {
             // Add other user attributes as needed
             return "currencyscreen";
         }
-        return "redirect:/login"; // Redirect to login if user is not logged in
+        return "redirect:/login.html"; // Redirect to login if user is not logged in
     }
 
     @PostMapping("/currencyscreen")

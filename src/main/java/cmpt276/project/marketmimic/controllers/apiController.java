@@ -3,6 +3,7 @@ package cmpt276.project.marketmimic.controllers;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -16,6 +17,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.ui.Model;
 import cmpt276.project.marketmimic.config.ApiConfig;
 import cmpt276.project.marketmimic.model.*;
+import cmpt276.project.marketmimic.services.CurrencyService;
 import jakarta.servlet.http.HttpSession;;
 
 @Controller
@@ -24,6 +26,8 @@ public class apiController {
 
     private final RestTemplate restTemplate;
     private final ApiConfig apiConfig;
+    @Autowired
+    private CurrencyService currencyService;
 
     public apiController(RestTemplateBuilder restTemplateBuilder, ApiConfig apiConfig) {
         this.restTemplate = restTemplateBuilder.build();
@@ -75,9 +79,14 @@ public class apiController {
     }
 
     @GetMapping("/price")
-    public String getStockPrice(@RequestParam String symbol, Model model) {
+    public String getStockPrice(@RequestParam String symbol, Model model, HttpSession session) {
         String quoteUrl = "https://finnhub.io/api/v1/quote?symbol=" + symbol + "&token=" + apiConfig.getApiKey();
         StockData stockData = restTemplate.getForObject(quoteUrl, StockData.class);
+        User user = (User) session.getAttribute("session_user");
+        if (user == null) {
+            return "redirect:/login.html";
+        }
+        model.addAttribute("usd", currencyService.getCurrencyBalance(user.getUsername()));
         model.addAttribute("symbol", symbol);
         model.addAttribute("stockData", stockData);
         return "stocksymbol";
