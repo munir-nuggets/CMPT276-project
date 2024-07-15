@@ -12,7 +12,7 @@ public class User {
     private String email;
     private String password;
     private Boolean isadmin;
-    private int usd;
+    private Double usd;
     public User() {
     }
     public User(String username, String email, String password) {
@@ -20,9 +20,9 @@ public class User {
         this.email = email;
         this.password = password;
         this.isadmin = false;
-        this.usd = 100;
+        this.usd = Double.valueOf(100);
     }
-    public User(String username, String email, String password, boolean isAdmin, int usd) {
+    public User(String username, String email, String password, boolean isAdmin, Double usd) {
         this.username = username;
         this.email = email;
         this.password = password;
@@ -61,10 +61,10 @@ public class User {
     public void setUid(int uid) {
         this.uid = uid;
     }
-    public int getUsd() {
+    public Double getUsd() {
         return usd;
     }
-    public void setUsd(int usd) {
+    public void setUsd(Double usd) {
         this.usd = usd;
     }
     

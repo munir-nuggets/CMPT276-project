@@ -102,7 +102,7 @@ public class loginController {
     public void createAdminIfDoesntExist() {
         List<User> users = userRepo.findAllByIsadmin(true);
         if (users.isEmpty()){ 
-            User user = new User("admin", "admin", "admin", true, 0);
+            User user = new User("admin", "admin", "admin", true, Double.valueOf(0));
             userRepo.save(user);
         }
     }
