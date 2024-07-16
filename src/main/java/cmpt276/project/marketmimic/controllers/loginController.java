@@ -1,5 +1,6 @@
 package cmpt276.project.marketmimic.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,6 +33,8 @@ public class loginController {
     private EmailService emailService;
     @Autowired
     private TokenService tokenService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     @Value("${app.base-url}")
     private String baseUrl;
 
@@ -46,7 +49,7 @@ public class loginController {
         } else if (emailIsTaken(email)) {
             return "emailIsTaken";
         }
-        User user = new User(username, email, password);
+        User user = new User(username, email, passwordEncoder.encode(password));
         userRepo.save(user);
         return "homepage";
     }
@@ -71,7 +74,7 @@ public class loginController {
         String password = loginData.get("password");
         Optional<User> userOpt = userRepo.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail);
 
-        if (userOpt.isPresent() && userOpt.get().getPassword().equals(password)){
+        if (userOpt.isPresent() && passwordEncoder.matches(password, userOpt.get().getPassword())){
             User user = userOpt.get();
             request.getSession().setAttribute("session_user", user);
             model.addAttribute("user", user);
@@ -83,7 +86,7 @@ public class loginController {
         }
     }
 
-    @PostMapping("/logout")
+    @PostMapping("/userlogout")
     public String logout(HttpServletRequest request){
         request.getSession().invalidate();
         return "redirect:/";
@@ -112,7 +115,7 @@ public class loginController {
     public void createAdminIfDoesntExist() {
         List<User> users = userRepo.findAllByIsadmin(true);
         if (users.isEmpty()){ 
-            User user = new User("admin", "admin", "admin", true, Double.valueOf(0));
+            User user = new User("admin", "admin", passwordEncoder.encode("admin"), true, Double.valueOf(0));
             userRepo.save(user);
         }
     }
@@ -157,7 +160,7 @@ public class loginController {
             User user = resetToken.getUser();
     
             // Update the user's password here
-            user.setPassword(newPassword);  // Ensure to hash the password before saving
+            user.setPassword(passwordEncoder.encode(newPassword));  // Ensure to hash the password before saving
             userRepo.save(user);
     
             return "redirect:/";
