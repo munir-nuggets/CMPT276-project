@@ -89,7 +89,7 @@ public class User {
         if(stockPurchases.containsKey(stockPurchase.getSymbol())) {
             StockPurchase existingStockPurchase = stockPurchases.get(stockPurchase.getSymbol());
             existingStockPurchase.setQuantity(existingStockPurchase.getQuantity() + stockPurchase.getQuantity());
-            existingStockPurchase.setPrice(stockPurchase.getPrice()+existingStockPurchase.getPrice());
+            existingStockPurchase.setPrice(existingStockPurchase.getPrice() + stockPurchase.getPrice());
         } else {
             stockPurchases.put(stockPurchase.getSymbol(), stockPurchase);
         }
