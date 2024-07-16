@@ -10,11 +10,23 @@
     <title>Manage Currency</title>
 </head>
 
-<body class="auth-body">
+<body>
 
-    <a href="/" style="text-decoration: none;">
-        <h1 id="hero-text" class="text-center text-white mt-5">MarketMimic</h1>
-    </a>
+    <nav class="navbar navbar-light navbar-custom">
+        <a class="navbar-brand p-3">
+            <img src="/imgs/icons8-stock-96.png" width="30" height="30" alt="" loading="lazy" class="icon">
+            MarketMimic
+        </a>
+
+        
+        <div class="topnav-right p-3 mb-3">
+            <button class="btn btn-custom m-2" onclick="window.location.href='/api/stocks/'">Back to Stock List</button>
+            <form action="/logout" method="post">
+                <button type="submit" class="btn btn-custom">Log out</button>
+
+            </form>
+        </div>
+    </nav>
 
     <h1 class="text-center text-white mt-5">You have $<span th:text="${usd}"></span>!</h1>
 
@@ -26,7 +38,6 @@
     </form>
 
     <br><br>
-    <button onclick="window.location.href='/api/stocks/'">Go to back to Stock List</button>
     <footer class="footer mt-auto py-3 bg-light">
         <div class="container text-center">
             <span class="">© 2024 MarketMimic</span>
