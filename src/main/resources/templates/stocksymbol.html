@@ -16,10 +16,12 @@
             <img src="/imgs/icons8-stock-96.png" width="30" height="30" alt="" loading="lazy" class="icon">
             MarketMimic
         </a>
+
+        
         <div class="topnav-right p-3 mb-3">
-            <p id="greeting" class="mb-0 p-3">Welcome, <span th:text="${user.username} + '!'"></span></p>
-            <form action="/userlogout" method="post">
+            <form action="/logout" method="post">
                 <button type="submit" class="btn btn-custom">Log out</button>
+
             </form>
         </div>
     </nav>
