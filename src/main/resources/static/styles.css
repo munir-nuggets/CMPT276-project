@@ -199,3 +199,45 @@ body, html {
     line-height: 1.2;
 }
 
+
+#portfolio-table{
+    background-color: #b8c1ec;
+    font-family: "Lato", sans-serif;
+    font-weight: 600;
+    color: #121629;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+#portfolio-table-title{
+    color:#121629;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 500;
+    font-size: 2rem;
+    line-height: 1.2;
+}
+
+#account-overview{
+    background-color: #b8c1ec;
+    font-family: "Lato", sans-serif;
+    font-weight: 600;
+    color: #121629;
+    font-size: 1rem;
+    line-height: 1.5;  
+}
+
+#overview-title{
+    color:#121629;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 500;
+    font-size: 2rem;
+    line-height: 1.2;
+}
+
+#portfolio-title{
+    color:#121629;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 700;
+    font-size: 2rem;
+    line-height: 1.2;
+}
