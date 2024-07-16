@@ -1,5 +1,6 @@
 package cmpt276.project.marketmimic.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,6 +32,8 @@ public class loginController {
     private EmailService emailService;
     @Autowired
     private TokenService tokenService;
+    @Value("${app.base-url}")
+    private String baseUrl;
 
     @PostMapping("/usersignup")
     public String userSignup(@RequestParam Map<String, String> entity) {
@@ -126,7 +129,7 @@ public class loginController {
             User user = optionalUser.get();
             PasswordResetToken token = tokenService.createToken(user);
 
-            String resetLink = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + "/reset-password?token=" + token.getToken();
+            String resetLink = baseUrl + "/reset-password?token=" + token.getToken();
             emailService.sendEmail(user.getEmail(), "Password Reset Request", "Click the link to reset your password: " + resetLink);
 
             model.addAttribute("message", "We have sent a reset password link to your email.");
