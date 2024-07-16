@@ -1,6 +1,5 @@
 package cmpt276.project.marketmimic.controllers;
 
-import java.io.IOException;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +13,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.springframework.ui.Model;
 import cmpt276.project.marketmimic.config.ApiConfig;
 import cmpt276.project.marketmimic.model.*;
-import cmpt276.project.marketmimic.service.ChartService;
 import cmpt276.project.marketmimic.services.CurrencyService;
 import jakarta.servlet.http.HttpSession;;
 
@@ -27,15 +28,15 @@ public class apiController {
 
     private final RestTemplate restTemplate;
     private final ApiConfig apiConfig;
-    private final ChartService chartService;
+    private final ObjectMapper objectMapper;
 
     @Autowired
     private CurrencyService currencyService;
 
-    public apiController(RestTemplateBuilder restTemplateBuilder, ApiConfig apiConfig, ChartService chartService) {
+    public apiController(RestTemplateBuilder restTemplateBuilder, ApiConfig apiConfig, ObjectMapper objectMapper) {
         this.restTemplate = restTemplateBuilder.build();
         this.apiConfig = apiConfig;
-        this.chartService = chartService;
+        this.objectMapper = objectMapper;
     }
 
     @GetMapping("/")
@@ -62,9 +63,10 @@ public class apiController {
         String stockDataUrl = "https://api.polygon.io/v2/aggs/ticker/" + symbol + "/range/1/day/" + getOneYearAgo() + "/" + getCurrentDate() + "?apiKey=" + apiConfig.getPolygonApiKey();
         StockDataResponse stockDataResponse = restTemplate.getForObject(stockDataUrl, StockDataResponse.class);
 
+        String stockDataResponseJson = "";
         try {
-            chartService.createStockChart(stockDataResponse, symbol);
-        } catch (IOException e) {
+            stockDataResponseJson = objectMapper.writeValueAsString(stockDataResponse);
+        } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
 
@@ -77,6 +79,7 @@ public class apiController {
         model.addAttribute("usd", currencyService.getCurrencyBalance(user.getUsername()));
         model.addAttribute("symbol", symbol);
         model.addAttribute("stockData", stockData);
+        model.addAttribute("stockDataResponse", stockDataResponseJson);
         model.addAttribute("user", user);
         return "stocksymbol";
     }
