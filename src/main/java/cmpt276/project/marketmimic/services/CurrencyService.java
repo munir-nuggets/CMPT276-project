@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import cmpt276.project.marketmimic.model.User;
 import cmpt276.project.marketmimic.model.UserRepository;
-import jakarta.servlet.http.HttpSession;
 
 @Service
 public class CurrencyService {
