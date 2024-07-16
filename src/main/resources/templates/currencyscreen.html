@@ -36,13 +36,13 @@
                 <div class="card-body">
                     <h4 id ="overview-title"class="card-title mb-3">Account Overview</h4> 
 
-                    <!--
+                    
                     <form action="/addcurrency" method="post">
                         <div class="form-group mb-3">
                             <input type="text" id="amount" name="amount" required>
                         </div>
                         <button type="submit" class="btn btn-primary">Add Money</button>
-                    </form> -->
+                    </form>
 
 
                     <div class="table-responsive">
@@ -79,13 +79,16 @@
                         <thead>
                             <tr>
                                 <th scope="col">Symbol</th>
-                                <th scope="col">Description</th>
-                                <th scope="col">Current Price</th>
-                                <th scope="col">Purchase Price</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">purchase price</th>
                             </tr>
                         </thead>
                         <tbody>
-                          
+                            <tr th:each="purchase : ${purchases}">
+                                <td th:text="${purchase.getSymbol()}"></td>
+                                <td th:text="${purchase.getQuantity()}"></td>
+                                <td th:text="'$' + ${purchase.getPrice()}"></td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>

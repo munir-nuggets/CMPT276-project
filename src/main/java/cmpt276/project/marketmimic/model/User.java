@@ -1,5 +1,7 @@
 package cmpt276.project.marketmimic.model;
 
+import java.util.Map;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -13,6 +15,11 @@ public class User {
     private String password;
     private Boolean isadmin;
     private Double usd;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "stock_purchases", joinColumns = @JoinColumn(name = "uid"))
+    @MapKeyColumn(name = "stock_name")
+    private Map<String, StockPurchase> stockPurchases;
 
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -72,5 +79,22 @@ public class User {
     public void setUsd(Double usd) {
         this.usd = usd;
     }
-    
+    public Map<String, StockPurchase> getStockPurchases() {
+        return stockPurchases;
+    }
+    public void setStockPurchases(Map<String, StockPurchase> stockPurchases) {
+        this.stockPurchases = stockPurchases;
+    }
+    public void addStockPurchase(StockPurchase stockPurchase) {
+        if(stockPurchases.containsKey(stockPurchase.getSymbol())) {
+            StockPurchase existingStockPurchase = stockPurchases.get(stockPurchase.getSymbol());
+            existingStockPurchase.setQuantity(existingStockPurchase.getQuantity() + stockPurchase.getQuantity());
+            existingStockPurchase.setPrice(stockPurchase.getPrice()+existingStockPurchase.getPrice());
+        } else {
+            stockPurchases.put(stockPurchase.getSymbol(), stockPurchase);
+        }
+    }
+    public void removeStockPurchase(String symbol) {
+        stockPurchases.remove(symbol);
+    }
 }
