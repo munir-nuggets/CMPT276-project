@@ -1,7 +1,7 @@
 package cmpt276.project.marketmimic.controllers;
 
+import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -17,6 +17,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.ui.Model;
 import cmpt276.project.marketmimic.config.ApiConfig;
 import cmpt276.project.marketmimic.model.*;
+import cmpt276.project.marketmimic.service.ChartService;
 import cmpt276.project.marketmimic.services.CurrencyService;
 import jakarta.servlet.http.HttpSession;;
 
@@ -26,37 +27,15 @@ public class apiController {
 
     private final RestTemplate restTemplate;
     private final ApiConfig apiConfig;
+    private final ChartService chartService;
+
     @Autowired
     private CurrencyService currencyService;
 
-    public apiController(RestTemplateBuilder restTemplateBuilder, ApiConfig apiConfig) {
+    public apiController(RestTemplateBuilder restTemplateBuilder, ApiConfig apiConfig, ChartService chartService) {
         this.restTemplate = restTemplateBuilder.build();
         this.apiConfig = apiConfig;
-    }
-
-    //
-    // NOTE: Using this method exceeds the 30 API calls per second limit for Finnhub, so it should be ignored for now
-    //
-    @GetMapping("/prices")
-    public Map<String, Object> getStockPrices(@RequestParam String exchange) {
-        String symbolsUrl = "https://finnhub.io/api/v1/stock/symbol?exchange=" + exchange + "&token=" + apiConfig.getApiKey();
-        ResponseEntity<List<Map<String, Object>>> symbolsResponse = restTemplate.exchange(symbolsUrl, 
-            HttpMethod.GET,
-            null, 
-            new ParameterizedTypeReference<>() {});
-
-        List<String> symbols = symbolsResponse.getBody().stream()
-                .map(symbol -> symbol.get("symbol").toString())
-                .collect(Collectors.toList());
-
-        Map<String, Object> stockPrices = new HashMap<>();
-        for (String symbol : symbols) {
-            String quoteUrl = "https://finnhub.io/api/v1/quote?symbol=" + symbol + "&token=" + apiConfig.getApiKey();
-            @SuppressWarnings("unchecked")
-            Map<String, Object> quote = restTemplate.getForObject(quoteUrl, Map.class);
-            stockPrices.put(symbol, quote);
-        }
-        return stockPrices;
+        this.chartService = chartService;
     }
 
     @GetMapping("/")
@@ -80,6 +59,15 @@ public class apiController {
 
     @GetMapping("/price")
     public String getStockPrice(@RequestParam String symbol, Model model, HttpSession session) {
+        String stockDataUrl = "https://api.polygon.io/v2/aggs/ticker/" + symbol + "/range/1/day/" + getOneYearAgo() + "/" + getCurrentDate() + "?apiKey=" + apiConfig.getPolygonApiKey();
+        StockDataResponse stockDataResponse = restTemplate.getForObject(stockDataUrl, StockDataResponse.class);
+
+        try {
+            chartService.createStockChart(stockDataResponse, symbol);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         String quoteUrl = "https://finnhub.io/api/v1/quote?symbol=" + symbol + "&token=" + apiConfig.getApiKey();
         StockData stockData = restTemplate.getForObject(quoteUrl, StockData.class);
         User user = (User) session.getAttribute("session_user");
@@ -91,5 +79,13 @@ public class apiController {
         model.addAttribute("stockData", stockData);
         model.addAttribute("user", user);
         return "stocksymbol";
+    }
+
+    private String getCurrentDate() {
+        return java.time.LocalDate.now().toString();
+    }
+
+    private String getOneYearAgo() {
+        return java.time.LocalDate.now().minusYears(1).toString();
     }
 }
