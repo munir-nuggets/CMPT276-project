@@ -19,6 +19,23 @@ public class CurrencyController {
     @Autowired
     private CurrencyService currencyService;
 
+    @PostMapping("/buystock")
+    public String buyStock(@RequestParam Map<String, String> purchaseData, HttpSession session) {
+        User user = (User) session.getAttribute("session_user");
+        if (user == null){
+            return "redirect:/login.html";
+        }
+        else {
+            try{
+                currencyService.addCurrency(user.getUsername(), -1 * Double.parseDouble(purchaseData.get("price")));
+                return "redirect:/currencyscreen";
+            }
+            catch (NumberFormatException e) {
+                return "invalidprice";
+            }
+        }
+    }
+
     @PostMapping("/addcurrency")
     public String addCurrency(@RequestParam Map<String, String> currencyData, HttpSession session) {
         User user = (User) session.getAttribute("session_user");
