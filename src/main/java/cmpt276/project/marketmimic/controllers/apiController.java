@@ -89,6 +89,7 @@ public class apiController {
         model.addAttribute("usd", currencyService.getCurrencyBalance(user.getUsername()));
         model.addAttribute("symbol", symbol);
         model.addAttribute("stockData", stockData);
+        model.addAttribute("user", user);
         return "stocksymbol";
     }
 }
