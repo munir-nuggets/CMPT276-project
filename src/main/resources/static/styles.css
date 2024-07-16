@@ -234,3 +234,10 @@ body, html {
     line-height: 1.2;
 }
 
+#portfolio-title{
+    color:#121629;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 700;
+    font-size: 2rem;
+    line-height: 1.2;
+}
