@@ -7,9 +7,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <link rel="stylesheet" href="/styles.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
-    <script src = "/stockscript.js"></script>
+    <script src="/stockscript.js"></script>
 </head>
-<body>
+<body class="d-flex flex-column">
 
     <nav class="navbar navbar-light navbar-custom">
         <a class="navbar-brand p-3">
@@ -19,37 +19,45 @@
 
         
         <div class="topnav-right p-3 mb-3">
-            <p id ="greeting" class=" mb-0 p-3 ">Welcome, <span th:text="${user.username} + '!'"></span></p>
             <form action="/userlogout" method="post">
                 <button type="submit" class="btn btn-custom">Log out</button>
+
             </form>
         </div>
     </nav>
 
     <main class="container">
-        <div id ="stock-details" class="card text-center">
+        <div id = "stock-container" class="card">
             <div class="card-body">
-                <h2 id ="stock-title" class="card-title">Stock Data for <span th:text="${symbol}"></span></h2>
-                <p class="card-text">Current Price: $<span th:text="${stockData.currentPrice}"></span></p>
-                <p class="card-text">High Price: $<span th:text="${stockData.highPrice}"></span></p>
-                <p class="card-text">Low Price: $<span th:text="${stockData.lowPrice}"></span></p>
-                <p class="card-text">Open Price: $<span th:text="${stockData.openingPrice}"></span></p>
-                <p class="card-text">Previous Close Price: $<span th:text="${stockData.previousClosePrice}"></span></p>
-                <p class="card-text">Your current balance: $<span th:text="${usd}"></span></p>
-                <canvas id="stockChart" width="1280" height="720"></canvas>
-                <a id ="return" class= "btn btn-custom btn-lg m-2 mt-2" href="/api/stocks/" >Back to List</a>
+                <div class="row">
+                    <div class="col-md-6 mt-3 text-center">
+                        <h2 id="stock-title" class="card-title text-center">Stock Data for <span th:text="${symbol}"></span></h2>
+                        <p class="card-text">Current Price: $<span th:text="${stockData.currentPrice}"></span></p>
+                        <p class="card-text">High Price: $<span th:text="${stockData.highPrice}"></span></p>
+                        <p class="card-text">Low Price: $<span th:text="${stockData.lowPrice}"></span></p>
+                        <p class="card-text">Open Price: $<span th:text="${stockData.openingPrice}"></span></p>
+                        <p class="card-text">Previous Close Price: $<span th:text="${stockData.previousClosePrice}"></span></p>
+                        <p class="card-text">Your current balance: $<span th:text="${usd}"></span></p>
+                        <a id="return" class="btn btn-custom btn-lg m-2 mt-2" href="/api/stocks/">Back to List</a>
+                        <a href="/buyStock" class="btn btn-primary btn-lg m-2 mt-2">Buy</a>
+                    </div>
+                    <div class="col-md-6">
+                        <canvas id="stockChart" width="600" height="400"></canvas>
+                    </div>
+                </div>
             </div>
         </div>
     </main>
     
     <footer class="footer mt-auto py-3 bg-light">
         <div class="container text-center">
-            <span class="">© 2024 MarketMimic</span>
+            <span>© 2024 MarketMimic</span>
             <a href="https://github.com/munir-nuggets/CMPT276-project" class="text-muted ml-2">
                 <img src="/imgs/github-mark-white.png" alt="GitHub" style="height: 24px;">
             </a>            
         </div>
     </footer>
+
     <script th:inline="javascript">
         /*<![CDATA[*/
         document.addEventListener("DOMContentLoaded", function() {
@@ -83,7 +91,7 @@
                                 tooltipFormat: 'MMM yyyy'
                             },
                             title: {
-                                display: false,
+                                display: false
                             }
                         },
                         y: {
@@ -97,6 +105,7 @@
                 }
             });
         });
+        /*]]>*/
     </script>
 </body>
 </html>

@@ -9,6 +9,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
@@ -19,7 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.ui.Model;
 import cmpt276.project.marketmimic.config.ApiConfig;
 import cmpt276.project.marketmimic.model.*;
-import cmpt276.project.marketmimic.services.CurrencyService;
+import cmpt276.project.marketmimic.service.CurrencyService;
 import jakarta.servlet.http.HttpSession;;
 
 @Controller
@@ -90,5 +91,25 @@ public class apiController {
 
     private String getOneYearAgo() {
         return java.time.LocalDate.now().minusYears(1).toString();
+    }
+
+    @PostMapping("/buy")
+    public String buyStock(@RequestParam Map<String, String> stockData, HttpSession session) {
+        User user = (User) session.getAttribute("session_user");
+        if (user == null) {
+            return "redirect:/login.html";
+        }
+        String symbol = stockData.get("symbol");
+        double stockPrice = Double.parseDouble(stockData.get("price"));
+        double quantity = Double.parseDouble(stockData.get("quantity"));
+        double price = stockPrice * quantity;
+
+        if(user.getUsd() >= price) {
+            currencyService.purchaseStock(symbol, quantity, price, user);
+            return "redirect:/api/stocks/";
+        } 
+        else {
+            return "/buyStock";
+        }
     }
 }

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import cmpt276.project.marketmimic.model.User;
-import cmpt276.project.marketmimic.services.CurrencyService;
+import cmpt276.project.marketmimic.service.CurrencyService;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -26,7 +26,7 @@ public class CurrencyController {
             return "redirect:/login.html";
         }
         else {
-            currencyService.addCurrency(user.getUsername(), Double.parseDouble(currencyData.get("amount")));
+            currencyService.addCurrency(user, Double.parseDouble(currencyData.get("amount")));
             return "redirect:/currencyscreen";
         }
     }
@@ -43,6 +43,7 @@ public class CurrencyController {
         User user = (User) session.getAttribute("session_user");
         if (user != null) {
             model.addAttribute("usd", currencyService.getCurrencyBalance(user.getUsername()));
+            model.addAttribute("purchases", user.getStockPurchases().values());
             // Add other user attributes as needed
             return "currencyscreen";
         }
@@ -54,5 +55,9 @@ public class CurrencyController {
         return "currencyscreen";
     }
     
+    @GetMapping("/buyStock")
+    public String buyStock(){
+        return "buyStock";
+    }
     
 }

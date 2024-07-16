@@ -81,6 +81,11 @@ public class TokenService {
     }
 
     @Transactional
+    public void deleteTokensByUser(User user) {
+        tokenRepository.deleteByUser(user);
+    }
+
+    @Transactional
     public boolean resetPassword(String token, String newPassword) {
         Optional<PasswordResetToken> optionalToken = tokenRepository.findByToken(token);
         if (optionalToken.isPresent()) {

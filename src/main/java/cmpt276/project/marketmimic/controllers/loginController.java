@@ -2,6 +2,7 @@ package cmpt276.project.marketmimic.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -168,5 +169,13 @@ public class loginController {
             userRepo.save(user);
     
             return "redirect:/";
+    }
+
+    @PostMapping("/delete-user")
+    public String deleteUser(@RequestParam String username) {
+        Optional<User> user = userRepo.findByUsername(username);
+            tokenService.deleteTokensByUser(user.get());
+            userRepo.delete(user.get());
+            return "redirect:/admin/dashboard";
     }
 }
