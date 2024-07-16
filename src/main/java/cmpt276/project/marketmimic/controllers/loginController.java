@@ -157,6 +157,6 @@ public class loginController {
             user.setPassword(newPassword);  // Ensure to hash the password before saving
             userRepo.save(user);
     
-            return "login";
+            return "redirect:/";
     }
 }
