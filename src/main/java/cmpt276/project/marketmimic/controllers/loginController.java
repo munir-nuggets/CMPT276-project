@@ -93,8 +93,12 @@ public class loginController {
     }
 
     @RequestMapping("/")
-    public String homepage() {
+    public String homepage(HttpServletRequest request) {
+        User user = (User) request.getSession().getAttribute("session_user");
         createAdminIfDoesntExist();
+        if(user != null){
+            return user.isIsadmin() ? "redirect:/admin/dashboard" : "redirect:/api/stocks/";
+        }
         return "homepage";
     }
 
