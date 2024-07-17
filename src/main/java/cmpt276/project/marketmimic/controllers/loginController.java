@@ -169,4 +169,12 @@ public class loginController {
     
             return "redirect:/";
     }
+
+    @PostMapping("/delete-user")
+    public String deleteUser(@RequestParam String username) {
+        Optional<User> user = userRepo.findByUsername(username);
+            tokenService.deleteTokensByUser(user.get());
+            userRepo.delete(user.get());
+            return "redirect:/admin/dashboard";
+    }
 }

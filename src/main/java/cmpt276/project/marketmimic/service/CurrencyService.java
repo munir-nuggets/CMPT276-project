@@ -28,9 +28,8 @@ public class CurrencyService {
         StockPurchase stockPurchase = new StockPurchase(symbol, quantity, price);
         user.addStockPurchase(stockPurchase);
 
-        double totalCost = quantity * price;
-        user.setUsd(user.getUsd() - totalCost);
-        
+        user.setUsd(user.getUsd() - price);
+
         userRepository.save(user);
     }
 

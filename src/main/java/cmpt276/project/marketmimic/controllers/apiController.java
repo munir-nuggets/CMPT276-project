@@ -100,11 +100,11 @@ public class apiController {
             return "redirect:/login.html";
         }
         String symbol = stockData.get("symbol");
-        double price = Double.parseDouble(stockData.get("price"));
+        double stockPrice = Double.parseDouble(stockData.get("price"));
         double quantity = Double.parseDouble(stockData.get("quantity"));
-        double total = price * quantity;
+        double price = stockPrice * quantity;
 
-        if(user.getUsd() >= total) {
+        if(user.getUsd() >= price) {
             currencyService.purchaseStock(symbol, quantity, price, user);
             return "redirect:/api/stocks/";
         } 
