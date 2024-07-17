@@ -57,7 +57,7 @@ public class CurrencyController {
     
     @GetMapping("/buyStock")
     public String buyStock(){
-        return "buyStock";
+        return "currencyScreen";
     }
     
 }
