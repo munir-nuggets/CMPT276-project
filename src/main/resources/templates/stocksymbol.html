@@ -39,6 +39,8 @@
                         <p class="card-text">Your current balance: $<span th:text="${usd}"></span></p>
                         <a id="return" class="btn btn-custom btn-lg m-2 mt-2" href="/api/stocks/">Back to List</a>
                         <button type="button" class="btn btn-primary btn-lg m-2 mt-2" onclick="openForm()">Buy</button>
+                        <button type="button" class="btn btn-primary btn-lg m-2 mt-2" onclick="openFormSell()">Sell</button>
+
                     </div>
                     <div class="col-md-6">
                         <canvas id="stockChart" width="600" height="400"></canvas>
@@ -48,7 +50,7 @@
         </div>
     </main>
 
-    <!-- modal -->
+    <!-- modals -->
     <div id="myModal" class="modal">
         <div class="modal-card">
             <span class="close" onclick="closeForm()">&times;</span>
@@ -70,6 +72,32 @@
                 <div class="text-center">
                     <button type="submit" class="btn btn-primary">Purchase</button>
                     <button type="button" class="btn btn-secondary ml-2" onclick="closeForm()">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="sellModal" class="modal">
+        <div class="modal-card">
+            <span class="close" onclick="closeSellForm()">&times;</span>
+            <form id="sellForm" action="/api/stocks/sell" method="post" class="form-container" onsubmit="return confirmSell()">
+                <h1 class="text-center">Sell Stock</h1>
+    
+                <label for="modalSymbolSell"><b>Symbol</b></label>
+                <input type="text" id="modalSymbolSell" name="symbol" required readonly class="form-control mb-3">
+    
+                <label for="modalPriceSell"><b>Price</b></label>
+                <input type="number" id="modalPriceSell" name="price" required readonly class="form-control mb-3">
+    
+                <label for="quantitySell"><b>Quantity</b></label>
+                <input type="number" id="quantitySell" name="quantity" required class="form-control mb-3" oninput="calculateSellTotal()">
+    
+                <label for="totalSell"><b>Total</b></label>
+                <input type="number" id="totalSell" name="total" required class="form-control mb-3" readonly>
+    
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Sell</button>
+                    <button type="button" class="btn btn-secondary ml-2" onclick="closeSellForm()">Close</button>
                 </div>
             </form>
         </div>
@@ -157,6 +185,31 @@
             if (confirmation) {
                 document.getElementById("buyForm").submit();
             }
+
+        function openFormSell() {
+        const symbol = document.getElementById("symbol").innerText;
+        const price = document.getElementById("currentPrice").innerText;
+        document.getElementById("modalSymbolSell").value = symbol;
+        document.getElementById("modalPriceSell").value = price;
+        document.getElementById("sellModal").style.display = "block";
+    }
+
+    function closeSellForm() {
+        document.getElementById("sellModal").style.display = "none";
+    }
+
+    function calculateSellTotal() {
+        const price = parseFloat(document.getElementById("modalPriceSell").value);
+        const quantity = parseInt(document.getElementById("quantitySell").value);
+        const total = price * quantity;
+        document.getElementById("totalSell").value = total.toFixed(2);
+    }
+
+    function confirmSell() {
+        const confirmation = confirm("Confirm sell?");
+        return confirmation;
+    }
+
         }
         /*]]>*/
     </script>
