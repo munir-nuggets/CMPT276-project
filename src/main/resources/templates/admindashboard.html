@@ -35,26 +35,22 @@
                         <tr>
                             <th>Username</th>
                             <th>Email</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr th:each="user : ${users}">
                             <td th:text="${user.username}">Username</td>
                             <td th:text="${user.email}">Email</td>
+                            <td><form action="/delete-user" method="post">
+                                <input type="hidden" name="username" th:value="${user.username}">
+                                <button type="submit" class="btn btn-custom">Delete User</button>
+                            </form></td>
                         </tr>
                     </tbody>
                 </table>
         </div>
     </div>
-    <div class="container">
-        <h1>Delete User</h1>
-        <form action="/delete-user" method="post">
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required>
-            <button type="submit">Delete User</button>
-        </form>
-    </div> 
-
     </main>
 
     <footer class="footer mt-auto py-3 bg-light">
