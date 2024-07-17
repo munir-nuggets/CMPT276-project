@@ -38,7 +38,7 @@
                         <p class="card-text">Previous Close Price: $<span th:text="${stockData.previousClosePrice}"></span></p>
                         <p class="card-text">Your current balance: $<span th:text="${usd}"></span></p>
                         <a id="return" class="btn btn-custom btn-lg m-2 mt-2" href="/api/stocks/">Back to List</a>
-                        <button type="button" class="btn btn-primary btn-lg m-2 mt-2" onclick="openForm()">Buy</button>
+                        <button type="button" class="btn btn-primary btn-lg m-2 mt-2" onclick="openForm()">Trade</button>
                     </div>
                     <div class="col-md-6">
                         <canvas id="stockChart" width="600" height="400"></canvas>
@@ -53,7 +53,23 @@
         <div class="modal-card">
             <span class="close" onclick="closeForm()">&times;</span>
             <form id="buyForm" action="/api/stocks/buy" method="post" class="form-container" onsubmit="return confirmPurchase(event)">
-                <h1 class="text-center">Buy Stock</h1>
+                <h1 class="text-center">Trade Stock</h1>
+
+                <div class="form-group">
+                    <label>Choose an action:</label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="action" id="buy" value="true" checked>
+                        <label class="form-check-label" for="buy">
+                            Buy
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="action" id="sell" value="false">
+                        <label class="form-check-label" for="sell">
+                            Sell
+                        </label>
+                    </div>
+                </div>
 
                 <label for="modalSymbol"><b>Symbol</b></label>
                 <input type="text" id="modalSymbol" name="symbol" required readonly class="form-control mb-3">
@@ -153,7 +169,7 @@
 
         function confirmPurchase(event) {
             event.preventDefault();
-            const confirmation = confirm("Confirm purchase?");
+            const confirmation = confirm("Confirm trade?");
             if (confirmation) {
                 document.getElementById("buyForm").submit();
             }

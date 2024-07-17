@@ -99,17 +99,18 @@ public class apiController {
         if (user == null) {
             return "redirect:/login.html";
         }
-        String symbol = stockData.get("symbol");
-        double stockPrice = Double.parseDouble(stockData.get("price"));
+        boolean isBuy = Boolean.parseBoolean(stockData.get("action"));
         double quantity = Double.parseDouble(stockData.get("quantity"));
-        double price = stockPrice * quantity;
+        String symbol = stockData.get("symbol");
+        Double price = Double.parseDouble(stockData.get("price"));
 
-        if(user.getUsd() >= price) {
-            currencyService.purchaseStock(symbol, quantity, price, user);
-            return "redirect:/api/stocks/";
+        double totalPrice = price * quantity;
+
+        if (isBuy && user.getUsd() >= totalPrice) {
+            currencyService.purchaseStock(symbol, quantity, totalPrice, user);
+        } else if (!isBuy) {
+            currencyService.sellStock(symbol, quantity, totalPrice, user);
         } 
-        else {
-            return "/buyStock";
-        }
+        return "redirect:/currencyscreen";
     }
 }
