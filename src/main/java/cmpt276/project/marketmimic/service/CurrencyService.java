@@ -35,9 +35,9 @@ public class CurrencyService {
 
     public void sellStock(String symbol, double quantity, double price, User user) {
         StockPurchase stockPurchase = user.getStockPurchases().get(symbol);
+
         if (stockPurchase != null && stockPurchase.getQuantity() >= quantity) {
-            double totalCost = quantity * price;
-            user.setUsd(user.getUsd() + totalCost);
+            user.setUsd(user.getUsd() + price);
             stockPurchase.setQuantity(stockPurchase.getQuantity() - quantity);
             if (stockPurchase.getQuantity() == 0) {
                 user.removeStockPurchase(symbol);

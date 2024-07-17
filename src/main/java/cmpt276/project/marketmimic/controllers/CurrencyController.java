@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import cmpt276.project.marketmimic.model.StockPurchase;
 import cmpt276.project.marketmimic.model.User;
 import cmpt276.project.marketmimic.service.CurrencyService;
 import jakarta.servlet.http.HttpSession;
@@ -41,13 +42,15 @@ public class CurrencyController {
     @GetMapping("/currencyscreen")
     public String currencyscreen(Model model, HttpSession session) {
         User user = (User) session.getAttribute("session_user");
-        if (user != null) {
-            model.addAttribute("usd", currencyService.getCurrencyBalance(user.getUsername()));
-            model.addAttribute("purchases", user.getStockPurchases().values());
-            // Add other user attributes as needed
-            return "currencyscreen";
+        if(user == null) return "redirect:/login.html";
+        
+        model.addAttribute("usd", currencyService.getCurrencyBalance(user.getUsername()));
+        model.addAttribute("purchases", user.getStockPurchases().values());
+        for(StockPurchase purchase : user.getStockPurchases().values()) {
+            model.addAttribute(purchase.getSymbol(), purchase.getQuantity());
         }
-        return "redirect:/login.html"; // Redirect to login if user is not logged in
+        // Add other user attributes as needed
+        return "currencyscreen";
     }
 
     @PostMapping("/currencyscreen")
@@ -58,6 +61,25 @@ public class CurrencyController {
     @GetMapping("/buyStock")
     public String buyStock(){
         return "buyStock";
+    }
+
+    @PostMapping("/sell")
+    public String sellStock(@RequestParam Map<String, String> stockData, HttpSession session) {
+        User user = (User) session.getAttribute("session_user");
+        if (user == null){
+            return "redirect:/login.html";
+        }
+        else {
+            Double quantity = Double.parseDouble(stockData.get("quantity"));
+            Double price = Double.parseDouble(stockData.get("price"));
+            currencyService.sellStock(stockData.get("symbol"), quantity, price, user);
+            return "redirect:/currencyscreen";
+        }
+    }
+
+    @GetMapping("/sellStock")
+    public String sellStock(){
+        return "sellStock";
     }
     
 }

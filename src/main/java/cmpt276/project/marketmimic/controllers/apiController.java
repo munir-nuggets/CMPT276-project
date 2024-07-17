@@ -78,6 +78,7 @@ public class apiController {
             return "redirect:/login.html";
         }
         model.addAttribute("usd", currencyService.getCurrencyBalance(user.getUsername()));
+        session.setAttribute("symbol", symbol);
         model.addAttribute("symbol", symbol);
         model.addAttribute("stockData", stockData);
         model.addAttribute("stockDataResponse", stockDataResponseJson);
@@ -93,23 +94,47 @@ public class apiController {
         return java.time.LocalDate.now().minusYears(1).toString();
     }
 
-    @PostMapping("/buy")
+    @GetMapping("/tradeStock")
+    public String tradeStock(Model model, HttpSession session) {
+        User user = (User) session.getAttribute("session_user");
+        if (user == null) {
+            return "redirect:/login.html";
+        }
+        model.addAttribute("user", user);
+        // model.addAttribute("symbol", symbol);
+        // model.addAttribute("price", getSinglePrice(symbol));
+        return "tradeStock";
+    }
+
+    @PostMapping("/trade")
     public String buyStock(@RequestParam Map<String, String> stockData, HttpSession session) {
         User user = (User) session.getAttribute("session_user");
         if (user == null) {
             return "redirect:/login.html";
         }
-        String symbol = stockData.get("symbol");
-        double stockPrice = Double.parseDouble(stockData.get("price"));
+        boolean isBuy = Boolean.parseBoolean(stockData.get("action"));
         double quantity = Double.parseDouble(stockData.get("quantity"));
-        double price = stockPrice * quantity;
+        String symbol = (String) session.getAttribute("symbol");
 
-        if(user.getUsd() >= price) {
-            currencyService.purchaseStock(symbol, quantity, price, user);
-            return "redirect:/api/stocks/";
-        } 
-        else {
-            return "/buyStock";
+        double totalPrice = getSinglePrice(symbol) * quantity;
+
+        if (isBuy && user.getUsd() >= totalPrice) {
+            currencyService.purchaseStock(symbol, quantity, totalPrice, user);
+            return "redirect:/api/stocks/tradeStock?symbol=" + symbol;
+        } else if (!isBuy) {
+            currencyService.sellStock(symbol, quantity, totalPrice, user);
+            return "redirect:/api/stocks/tradeStock?symbol=" + symbol;
+        } else {
+            return "redirect:/api/stocks/tradeStock?symbol=" + symbol;
         }
     }
+
+    private double getSinglePrice(String symbol) {
+        String quoteUrl = "https://finnhub.io/api/v1/quote?symbol=" + symbol + "&token=" + apiConfig.getApiKey();
+        StockData stockData = restTemplate.getForObject(quoteUrl, StockData.class);
+        return stockData.getCurrentPrice();
+    }
+
+    
+
 }

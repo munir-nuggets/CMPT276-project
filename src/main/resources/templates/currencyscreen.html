@@ -7,6 +7,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <link rel="stylesheet" href="styles.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <title>Manage Portfolio</title>
 </head>
 
@@ -36,14 +39,14 @@
                 <div class="card-body">
                     <h4 id ="overview-title"class="card-title mb-3">Account Overview</h4> 
 
-                    <!--
+                    
                     <form action="/addcurrency" method="post">
                         <div class="form-group mb-3">
                             <input type="text" id="amount" name="amount" required>
                         </div>
                         <button type="submit" class="btn btn-primary">Add Money</button>
                     </form>
-                    -->
+                   
 
                     <div class="table-responsive">
                         <table class="table table-striped">
@@ -67,8 +70,46 @@
         </div>
     </div>
     
-    
-    
+    <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Sell stock</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container mt-5">
+                        <form action="/sell" method="post">
+
+                            <div class="form-group">
+                                <label for="selectSymbol">Select stock to sell</label>
+                                <select class="form-control" id="selectSymbol" name="selectSymbol">
+                                    <option value="" disabled selected>Select your option</option>
+                                    <option th:each="purchase : ${purchases}" th:value="${purchase.getSymbol()}" th:text="${purchase.getSymbol()}"></option>
+                                </select> <br>
+
+                                <label for="quantity">Quantity</label>
+                                <input type="number" id="quantity" name="quantity">
+
+                                <p>Selling price: <span></span></p>
+
+                                <p>Final cost: <span></span></p>
+
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="container mt-4">
         <div id = "portfolio-table" class="card">
@@ -94,9 +135,7 @@
                 </div>
             </div>
         </div>
-        </div>
     </div>
-    
 
     <br><br>
     <footer class="footer mt-auto py-3 bg-light">
