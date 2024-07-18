@@ -77,7 +77,7 @@ public class User {
         return usd;
     }
     public void setUsd(Double usd) {
-        this.usd = usd;
+        this.usd = Math.round(usd * 100.0) / 100.0;
     }
     public Map<String, StockPurchase> getStockPurchases() {
         return stockPurchases;

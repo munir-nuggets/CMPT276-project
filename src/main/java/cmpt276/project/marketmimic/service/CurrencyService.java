@@ -25,24 +25,34 @@ public class CurrencyService {
     }
 
     public void purchaseStock(String symbol, double quantity, double price, User user) {
+        if (user.getUsd() < price) 
+            return;
+        
         StockPurchase stockPurchase = new StockPurchase(symbol, quantity, price);
         user.addStockPurchase(stockPurchase);
-
         user.setUsd(user.getUsd() - price);
 
         userRepository.save(user);
     }
 
-    public void sellStock(String symbol, double quantity, double price, User user) {
-        StockPurchase stockPurchase = user.getStockPurchases().get(symbol);
-        if (stockPurchase != null && stockPurchase.getQuantity() >= quantity) {
-            user.setUsd(user.getUsd() + price);
-            stockPurchase.setQuantity(stockPurchase.getQuantity() - quantity);
-            if (stockPurchase.getQuantity() == 0) {
-                user.removeStockPurchase(symbol);
-            }
-            userRepository.save(user);
+    public void sellStock(String symbol, double sellingQuantity, double price, User user) {
+        StockPurchase purchasedStock = user.getStockPurchases().get(symbol);
+        if(purchasedStock == null || purchasedStock.getQuantity() < sellingQuantity) {
+            System.out.println("User does not own enough stock to sell");
+            return;
         }
+
+        Double remainingQuantityRatio = (purchasedStock.getQuantity() - sellingQuantity) / purchasedStock.getQuantity();
+        Double updatedPrice = purchasedStock.getPrice() * remainingQuantityRatio;
+
+        user.setUsd(user.getUsd() + price);
+        purchasedStock.setQuantity(purchasedStock.getQuantity() - sellingQuantity);
+        purchasedStock.setPrice(updatedPrice);
+
+        if (purchasedStock.getQuantity() == 0) 
+            user.removeStockPurchase(symbol);
+            
+        userRepository.save(user);
     }
 
     public Double getCurrencyBalance(String username) {

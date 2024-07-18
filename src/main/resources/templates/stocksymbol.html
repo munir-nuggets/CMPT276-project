@@ -36,7 +36,7 @@
                         <p class="card-text">Low Price: $<span th:text="${stockData.lowPrice}"></span></p>
                         <p class="card-text">Open Price: $<span th:text="${stockData.openingPrice}"></span></p>
                         <p class="card-text">Previous Close Price: $<span th:text="${stockData.previousClosePrice}"></span></p>
-                        <p class="card-text">Your current balance: $<span th:text="${usd}"></span></p>
+                        <p class="card-text">Your current balance: $<span th:text="${usd}" id="balance"></span></p>
                         <a id="return" class="btn btn-custom btn-lg m-2 mt-2" href="/api/stocks/">Back to List</a>
                         <button type="button" class="btn btn-primary btn-lg m-2 mt-2" onclick="openForm()">Trade</button>
                     </div>
@@ -52,7 +52,7 @@
     <div id="myModal" class="modal">
         <div class="modal-card">
             <span class="close" onclick="closeForm()">&times;</span>
-            <form id="buyForm" action="/api/stocks/buy" method="post" class="form-container" onsubmit="return confirmPurchase(event)">
+            <form id="buyForm" action="/api/stocks/buy" method="post" class="form-container" onsubmit="return confirmTrade(event)">
                 <h1 class="text-center">Trade Stock</h1>
 
                 <div class="form-group">
@@ -86,32 +86,6 @@
                 <div class="text-center">
                     <button type="submit" class="btn btn-primary">Submit</button>
                     <button type="button" class="btn btn-secondary ml-2" onclick="closeForm()">Close</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <div id="sellModal" class="modal">
-        <div class="modal-card">
-            <span class="close" onclick="closeSellForm()">&times;</span>
-            <form id="sellForm" action="/api/stocks/sell" method="post" class="form-container" onsubmit="return confirmSell()">
-                <h1 class="text-center">Sell Stock</h1>
-    
-                <label for="modalSymbolSell"><b>Symbol</b></label>
-                <input type="text" id="modalSymbolSell" name="symbol" required readonly class="form-control mb-3">
-    
-                <label for="modalPriceSell"><b>Price</b></label>
-                <input type="number" id="modalPriceSell" name="price" required readonly class="form-control mb-3">
-    
-                <label for="quantitySell"><b>Quantity</b></label>
-                <input type="number" id="quantitySell" name="quantity" required class="form-control mb-3" oninput="calculateSellTotal()">
-    
-                <label for="totalSell"><b>Total</b></label>
-                <input type="number" id="totalSell" name="total" required class="form-control mb-3" readonly>
-    
-                <div class="text-center">
-                    <button type="submit" class="btn btn-primary">Sell</button>
-                    <button type="button" class="btn btn-secondary ml-2" onclick="closeSellForm()">Close</button>
                 </div>
             </form>
         </div>
@@ -174,6 +148,7 @@
             });
         });
 
+
         function openForm() {
             const symbol = document.getElementById("symbol").innerText;
             const price = document.getElementById("currentPrice").innerText;
@@ -193,38 +168,32 @@
             document.getElementById("total").value = total.toFixed(2);
         }
 
-        function confirmPurchase(event) {
+        function confirmTrade(event) {
             event.preventDefault();
+            const total = parseFloat(document.getElementById("total").value);
+            const balance = parseFloat(document.getElementById("balance").innerText);
+            const quantity = parseInt(document.getElementById("quantity").value);
+            const quantityOwned = /*[[${quantityOwned}]]*/ 0;
+            const isPurchase = document.getElementById("buy").checked;
+
+            if (isPurchase) {
+                if (total > balance) {
+                    alert("Insufficient funds");
+                    return false;
+                }
+            } else {
+                if (quantity > quantityOwned) {
+                    alert("Insufficient shares");
+                    return false;
+                }
+            }
+
             const confirmation = confirm("Confirm trade?");
             if (confirmation) {
                 document.getElementById("buyForm").submit();
             }
-
-        function openFormSell() {
-        const symbol = document.getElementById("symbol").innerText;
-        const price = document.getElementById("currentPrice").innerText;
-        document.getElementById("modalSymbolSell").value = symbol;
-        document.getElementById("modalPriceSell").value = price;
-        document.getElementById("sellModal").style.display = "block";
-    }
-
-    function closeSellForm() {
-        document.getElementById("sellModal").style.display = "none";
-    }
-
-    function calculateSellTotal() {
-        const price = parseFloat(document.getElementById("modalPriceSell").value);
-        const quantity = parseInt(document.getElementById("quantitySell").value);
-        const total = price * quantity;
-        document.getElementById("totalSell").value = total.toFixed(2);
-    }
-
-    function confirmSell() {
-        const confirmation = confirm("Confirm sell?");
-        return confirmation;
-    }
-
         }
+        
         /*]]>*/
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76A2I9BoF2jKFqEDeAQyc9GS7K2W1Lq6hxSZvFV3r3nwJl6FqHNdRX7ar4"></script>

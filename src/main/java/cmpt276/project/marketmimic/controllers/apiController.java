@@ -82,6 +82,8 @@ public class apiController {
         model.addAttribute("stockData", stockData);
         model.addAttribute("stockDataResponse", stockDataResponseJson);
         model.addAttribute("user", user);
+        double quantityOwned = user.getStockPurchases().containsKey(symbol) ? user.getStockPurchases().get(symbol).getQuantity() : 0;
+        model.addAttribute("quantityOwned", quantityOwned);
         return "stocksymbol";
     }
 
@@ -94,21 +96,20 @@ public class apiController {
     }
 
     @PostMapping("/buy")
-    public String buyStock(@RequestParam Map<String, String> stockData, HttpSession session) {
+    public String buyStock(@RequestParam Map<String, String> stockData, HttpSession session, Model model) {
         User user = (User) session.getAttribute("session_user");
-        if (user == null) {
-            return "redirect:/login.html";
-        }
+        if (user == null) return "redirect:/login.html";
+
         boolean isBuy = Boolean.parseBoolean(stockData.get("action"));
         double quantity = Double.parseDouble(stockData.get("quantity"));
         String symbol = stockData.get("symbol");
-        Double price = Double.parseDouble(stockData.get("price"));
+        Double stockPrice = Double.parseDouble(stockData.get("price"));
+        double totalPrice = stockPrice * quantity;
 
-        double totalPrice = price * quantity;
-
-        if (isBuy && user.getUsd() >= totalPrice) {
+        if (isBuy) {
             currencyService.purchaseStock(symbol, quantity, totalPrice, user);
-        } else if (!isBuy) {
+        } else {
+            System.out.println("Selling stock"); 
             currencyService.sellStock(symbol, quantity, totalPrice, user);
         } 
         return "redirect:/currencyscreen";
