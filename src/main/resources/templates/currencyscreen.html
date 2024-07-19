@@ -53,12 +53,12 @@
                                     <td th:text="'$' + ${usd}">0.00</td>
                                 </tr>
                                 <tr>
-                                    <th scope="row">Gains</th>
-                                    <td>0.00</td>
+                                    <th scope="row">Account Value</th>
+                                    <td th:text="'$' + ${accountValue}"></td>
                                 </tr>
                                 <tr>
-                                    <th scope="row">Return</th>
-                                    <td>%0.00</td>
+                                    <th scope="row">Total Return</th>
+                                    <td th:text="${accountReturn} + '%'"></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -81,13 +81,15 @@
                                 <th scope="col">Symbol</th>
                                 <th scope="col">Quantity</th>
                                 <th scope="col">purchase price</th>
+                                <th scope="col">Return</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr th:each="purchase : ${purchases}">
-                                <td th:text="${purchase.getSymbol()}"></td>
+                                <td><a th:href="@{/api/stocks/price(symbol=${purchase.symbol})}" th:text="${purchase.symbol}"></a></td>
                                 <td th:text="${purchase.getQuantity()}"></td>
                                 <td th:text="'$' + ${purchase.getPrice()}"></td>
+                                <td th:text="${stockReturns.get(purchase.symbol)} + '%'"></td>
                             </tr>
                         </tbody>
                     </table>
@@ -107,6 +109,10 @@
             </a>
         </div>
     </footer>
+
+    <script>
+        
+    </script>
 
 </body>
 

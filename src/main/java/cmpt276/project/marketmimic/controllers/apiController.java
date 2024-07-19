@@ -40,6 +40,14 @@ public class apiController {
         this.objectMapper = objectMapper;
     }
 
+    private String getCurrentDate() {
+        return java.time.LocalDate.now().toString();
+    }
+
+    private String getOneYearAgo() {
+        return java.time.LocalDate.now().minusYears(1).toString();
+    }
+
     @GetMapping("/")
     public String getStockSymbols(Model model, HttpSession session) {
         User user = (User) session.getAttribute("session_user");
@@ -84,15 +92,8 @@ public class apiController {
         model.addAttribute("user", user);
         double quantityOwned = user.getStockPurchases().containsKey(symbol) ? user.getStockPurchases().get(symbol).getQuantity() : 0;
         model.addAttribute("quantityOwned", quantityOwned);
+
         return "stocksymbol";
-    }
-
-    private String getCurrentDate() {
-        return java.time.LocalDate.now().toString();
-    }
-
-    private String getOneYearAgo() {
-        return java.time.LocalDate.now().minusYears(1).toString();
     }
 
     @PostMapping("/buy")

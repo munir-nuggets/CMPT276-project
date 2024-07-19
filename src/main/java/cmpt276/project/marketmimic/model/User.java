@@ -32,7 +32,7 @@ public class User {
         this.email = email;
         this.password = password;
         this.isadmin = false;
-        this.usd = Double.valueOf(100);
+        this.usd = Double.valueOf(10000);
     }
     public User(String username, String email, String password, boolean isAdmin, Double usd) {
         this.username = username;
