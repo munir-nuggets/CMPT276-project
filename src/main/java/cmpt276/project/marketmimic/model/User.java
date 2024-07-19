@@ -19,7 +19,7 @@ public class User {
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "stock_purchases", joinColumns = @JoinColumn(name = "uid"))
     @MapKeyColumn(name = "stock_name")
-    private Map<String, StockPurchase> stockPurchases;
+    private Map<String, StockPurchase> stockPurchases = new java.util.HashMap<>();
 
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)

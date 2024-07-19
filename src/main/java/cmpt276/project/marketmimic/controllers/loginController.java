@@ -39,7 +39,7 @@ public class loginController {
     private String baseUrl;
 
     @PostMapping("/usersignup")
-    public String userSignup(@RequestParam Map<String, String> entity) {
+    public String userSignup(@RequestParam Map<String, String> entity, HttpServletRequest request) {
         String username = entity.get("username");
         String email = entity.get("email");
         String password = entity.get("password");
@@ -51,7 +51,9 @@ public class loginController {
         }
         User user = new User(username, email, passwordEncoder.encode(password));
         userRepo.save(user);
-        return "homepage";
+        request.getSession().setAttribute("session_user", user);
+
+        return "redirect:/api/stocks/";
     }
     
     // borrowed from Bobby Chan's demo
