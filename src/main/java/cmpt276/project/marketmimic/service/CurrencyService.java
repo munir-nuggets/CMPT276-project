@@ -14,6 +14,9 @@ public class CurrencyService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private FinnhubService finnhubService;
+
     public void addCurrency(User user, double amount) {
         user.setUsd(user.getUsd() + amount);
         userRepository.save(user);
@@ -61,5 +64,14 @@ public class CurrencyService {
             return userOpt.get().getUsd();
         }
         return Double.valueOf(0);
+    }
+
+    public Double getAccountValue(User user) {
+        Double totalStockValue = 0.0;
+        for(StockPurchase stock : user.getStockPurchases().values()){
+            Double currentStockWorth = finnhubService.getSinglePrice(stock.getSymbol()) * stock.getQuantity();
+            totalStockValue += currentStockWorth;
+        }
+        return totalStockValue + user.getUsd();
     }
 }
