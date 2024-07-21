@@ -29,7 +29,7 @@ public class mainPageController {
         User u = (User) session.getAttribute("session_user");
         if (u==null) return "redirect:/login.html";
 
-        List<User> users = userRepository.findAll();
+        List<User> users = userRepository.findAllByIsadmin(false);
         Map<User, Double> accountValues = new HashMap<User,Double>();
 
         for (User user : users) {
