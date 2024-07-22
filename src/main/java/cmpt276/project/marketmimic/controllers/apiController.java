@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.springframework.ui.Model;
@@ -81,6 +82,23 @@ public class apiController {
 
         String quoteUrl = "https://finnhub.io/api/v1/quote?symbol=" + symbol + "&token=" + apiConfig.getApiKey();
         StockData stockData = restTemplate.getForObject(quoteUrl, StockData.class);
+
+        String imageUrl = "https://financialmodelingprep.com/api/v3/profile/" + symbol + "?apikey=zJOJWBkjzsqVocWjAavycLoKIqVjxCqp";
+        String image = "";
+        
+        ResponseEntity<String> response = restTemplate.getForEntity(imageUrl, String.class);
+
+        ObjectMapper imageObjectMapper = new ObjectMapper();
+        List<ImageResponse> imageResponses;
+        try {
+            imageResponses = imageObjectMapper.readValue(response.getBody(), new TypeReference<List<ImageResponse>>() {});
+            if (imageResponses != null && !imageResponses.isEmpty()) {
+                image = imageResponses.get(0).getImage();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
         User user = (User) session.getAttribute("session_user");
         if (user == null) {
             return "redirect:/login.html";
@@ -90,6 +108,7 @@ public class apiController {
         model.addAttribute("stockData", stockData);
         model.addAttribute("stockDataResponse", stockDataResponseJson);
         model.addAttribute("user", user);
+        model.addAttribute("imageResponse", image);
         double quantityOwned = user.getStockPurchases().containsKey(symbol) ? user.getStockPurchases().get(symbol).getQuantity() : 0;
         model.addAttribute("quantityOwned", quantityOwned);
 
