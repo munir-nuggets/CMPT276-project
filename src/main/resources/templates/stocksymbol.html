@@ -7,30 +7,44 @@
     <link rel="stylesheet" href="/styles.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
     <script src="/stockscript.js"></script>
+    <script src ="/trading.js"></script>
     <title>Symbol Details</title>
    
 </head>
 <body>
 
     <nav class="navbar navbar-light navbar-custom">
-        <a class="navbar-brand p-3">
-            <img src="/imgs/icons8-stock-96.png" width="30" height="30" alt="" loading="lazy" class="icon">
-            MarketMimic
-        </a>
-
-        <div class="topnav-right p-3 mb-3">
-            <form action="/userlogout" method="post">
-                <button type="submit" class="btn btn-custom">Log out</button>
-            </form>
+        <div class="container">
+            <a class="navbar-brand p-3">
+                <img src="/imgs/icons8-stock-96.png" width="30" height="30" alt="" loading="lazy" class="icon">
+                MarketMimic
+            </a>
+    
+            <div class="dropdown p-3 ml-3">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
+                    Welcome, <span th:text="${user.username} + '!'"></span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                    <li><a class="dropdown-item" href="/currencyscreen">View Portfolio</a></li>
+                    <li><a class="dropdown-item" href="/leaderboard">Leaderboard</a></li>
+                    <li>
+                        <form action="/userlogout" method="post" class="d-inline">
+                            <button type="submit" class="dropdown-item">Log out</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
         </div>
     </nav>
+
 
     <main class="container">
         <div id="stock-container" class="card">
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6 mt-3 text-center">
-                        <h2 id="stock-title" class="card-title text-center">Stock Data for <span id="symbol" th:text="${symbol}"></span></h2>
+                        <h2 id="stock-title" class="card-title text-center">Stock Data for <span id="symbol" th:text="${symbol}"></span>
+                            <img th:src="${imageResponse}" width="30" height="30"></h2>
                         <p class="card-text">Current Price: $<span id="currentPrice" th:text="${stockData.currentPrice}"></span></p>
                         <p class="card-text">High Price: $<span th:text="${stockData.highPrice}"></span></p>
                         <p class="card-text">Low Price: $<span th:text="${stockData.lowPrice}"></span></p>
@@ -146,8 +160,62 @@
                     }
                 }
             });
-        });
 
+            let previousPrice = null;
+            let currentPrice = null;
+
+            // WebSocket
+            const apiKey = 'cq1jlm1r01qjh3d5pt90cq1jlm1r01qjh3d5pt9g';
+            const symbol = /*[[${symbol}]]*/ 'symbol';
+
+            const socket = new WebSocket(`wss://ws.finnhub.io?token=${apiKey}`);
+
+            socket.addEventListener('open', function (event) {
+                socket.send(JSON.stringify({'type': 'subscribe', 'symbol': symbol}));
+            });
+
+            socket.addEventListener('message', function (event) {
+                const data = JSON.parse(event.data);
+                if (data.type === 'trade') {
+                    currentPrice = data.data[0].p.toFixed(2);
+                }
+            });
+
+            setInterval(function() {
+                if (currentPrice !== null) {
+                    var priceElement = document.getElementById('currentPrice');
+                    priceElement.innerText = currentPrice;
+
+                    // Change the color based on price movement
+                    if (previousPrice !== null) {
+                        if (currentPrice > previousPrice) {
+                            priceElement.style.color = 'green';
+                        } else if (currentPrice < previousPrice) {
+                            priceElement.style.color = 'red';
+                        } else {
+                            priceElement.style.color = 'black'; // No change in price
+                        }
+                    }
+
+                    // Update the previous price
+                    previousPrice = currentPrice;
+                }
+            }, 1000);
+
+            socket.addEventListener('close', function (event) {
+                console.log('WebSocket connection closed:', event);
+            });
+
+            socket.addEventListener('error', function (error) {
+                console.error('WebSocket error:', error);
+            });
+
+            window.onbeforeunload = function() {
+                if (socket) {
+                    socket.close();
+                }
+            };
+        });
 
         function openForm() {
             const symbol = document.getElementById("symbol").innerText;
@@ -196,6 +264,8 @@
         
         /*]]>*/
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76A2I9BoF2jKFqEDeAQyc9GS7K2W1Lq6hxSZvFV3r3nwJl6FqHNdRX7ar4"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
 </html>
