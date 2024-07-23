@@ -12,12 +12,34 @@
 <body>
 
     <nav class="navbar navbar-light navbar-custom">
-        <a class="navbar-brand p-3">
-            <img src="/imgs/icons8-stock-96.png" width="30" height="30" alt="" loading="lazy" class="icon">
-            MarketMimic
-        </a>
+        <div class="container">
+            <a class="navbar-brand p-3">
+                <img src="/imgs/icons8-stock-96.png" width="30" height="30" alt="" loading="lazy" class="icon">
+                MarketMimic
+            </a>
+    
+            <div class="dropdown p-3 ml-3">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
+                    Welcome, <span th:text="${user.username} + '!'"></span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                    <li><a class="dropdown-item" href="/currencyscreen">View Portfolio</a></li>
+                    <li><a class="dropdown-item" href="/leaderboard">Leaderboard</a></li>
+                    <li>
+                        <form action="/userlogout" method="post" class="d-inline">
+                            <button type="submit" class="dropdown-item">Log out</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
-        
+
+
+
+
+        <!--
         <div class="topnav-right p-3 mb-3">
             <p id ="greeting" class=" mb-0 ">Welcome, <span th:text="${user.username} + '!'"></span></p>
             <button onclick="window.location.href='/leaderboard'">Leaderboard</button>
@@ -26,7 +48,10 @@
                 <button type="submit" class="btn btn-custom">Log out</button>
             </form>
         </div>
-    </nav>
+        -->
+       
+ 
+    
 
     <main class="flex-grow-1">
         <h1 id="stocklist-title" class="text-center mt-5 mb-5">Search for a Symbol</h1>
@@ -42,8 +67,8 @@
         </ul>
     </main>
     
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz4fnFO9gybBgZfPhhze1hbGxG2V8P3rdgz/lAhlwR1yt3p6Vzuxi5ND05" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-cn7l7gDp0eyVpmoAro6VZU7Q4sy6kU5g5E4H4qfOpcPfE2twM6cfzrj0XRI5HN8l" crossorigin="anonymous"></script>
-
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
 </html>

@@ -297,3 +297,14 @@ body, html {
     text-decoration: none;
     cursor: pointer;
 }
+
+
+.dropdown-toggle {
+    background-color: #eebbc3; 
+    color: #232946;
+    border: none;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 500;
+    font-size: 16px; 
+}
+

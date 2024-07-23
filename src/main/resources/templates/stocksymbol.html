@@ -7,22 +7,19 @@
     <link rel="stylesheet" href="/styles.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
     <script src="/stockscript.js"></script>
+    <script src ="/trading.js"></script>
     <title>Symbol Details</title>
    
 </head>
 <body>
 
     <nav class="navbar navbar-light navbar-custom">
-        <a class="navbar-brand p-3">
-            <img src="/imgs/icons8-stock-96.png" width="30" height="30" alt="" loading="lazy" class="icon">
-            MarketMimic
-        </a>
-
-        <div class="topnav-right p-3 mb-3">
-            <form action="/userlogout" method="post">
-                <button type="submit" class="btn btn-custom">Log out</button>
-            </form>
-        </div>
+        <div class="container-fluid">
+            <a class="navbar-brand p-3">
+                <img src="/imgs/icons8-stock-96.png" width="30" height="30" alt="" loading="lazy" class="icon">
+                MarketMimic
+            </a>
+    
     </nav>
 
     <main class="container">
@@ -147,52 +144,6 @@
                 }
             });
         });
-
-
-        function openForm() {
-            const symbol = document.getElementById("symbol").innerText;
-            const price = document.getElementById("currentPrice").innerText;
-            document.getElementById("modalSymbol").value = symbol;
-            document.getElementById("modalPrice").value = price;
-            document.getElementById("myModal").style.display = "block";
-        }
-
-        function closeForm() {
-            document.getElementById("myModal").style.display = "none";
-        }
-
-        function calculateTotal() {
-            const price = parseFloat(document.getElementById("modalPrice").value);
-            const quantity = parseInt(document.getElementById("quantity").value);
-            const total = price * quantity;
-            document.getElementById("total").value = total.toFixed(2);
-        }
-
-        function confirmTrade(event) {
-            event.preventDefault();
-            const total = parseFloat(document.getElementById("total").value);
-            const balance = parseFloat(document.getElementById("balance").innerText);
-            const quantity = parseInt(document.getElementById("quantity").value);
-            const quantityOwned = /*[[${quantityOwned}]]*/ 0;
-            const isPurchase = document.getElementById("buy").checked;
-
-            if (isPurchase) {
-                if (total > balance) {
-                    alert("Insufficient funds");
-                    return false;
-                }
-            } else {
-                if (quantity > quantityOwned) {
-                    alert("Insufficient shares");
-                    return false;
-                }
-            }
-
-            const confirmation = confirm("Confirm trade?");
-            if (confirmation) {
-                document.getElementById("buyForm").submit();
-            }
-        }
         
         /*]]>*/
     </script>
