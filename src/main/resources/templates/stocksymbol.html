@@ -121,7 +121,7 @@
             const stockDataResponse = /*[[${stockDataResponse}]]*/ '[]';
             const parsedStockDataResponse = JSON.parse(stockDataResponse);
 
-            const labels = parsedStockDataResponse.results?.map(data => new Date(data.t).toLocaleDateString());
+            const labels = parsedStockDataResponse.results?.map(data => new Date(data.t).toISOString().split('T')[0]);
             const prices = parsedStockDataResponse.results?.map(data => data.c);
 
             const chart = new Chart(ctx, {
@@ -129,7 +129,7 @@
                 data: {
                     labels: labels,
                     datasets: [{
-                        label: 'Stock Price',
+                        label: 'Closing Price',
                         data: prices,
                         borderColor: 'rgba(255, 0, 0, 1)',
                         borderWidth: 2,
