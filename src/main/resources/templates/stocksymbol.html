@@ -44,7 +44,7 @@
                 <div class="row">
                     <div class="col-md-6 mt-3 text-center">
                         <h2 id="stock-title" class="card-title text-center">Stock Data for <span id="symbol" th:text="${symbol}"></span>
-                            <img th:src="${imageResponse}" width="30" height="30"></h2>
+                            <img th:src="${company.logo}" width="30" height="30" style="margin: 0px 0px 10px 15px"></h2>
                         <p class="card-text">Current Price: $<span id="currentPrice" th:text="${stockData.currentPrice}"></span></p>
                         <p class="card-text">High Price: $<span th:text="${stockData.highPrice}"></span></p>
                         <p class="card-text">Low Price: $<span th:text="${stockData.lowPrice}"></span></p>
