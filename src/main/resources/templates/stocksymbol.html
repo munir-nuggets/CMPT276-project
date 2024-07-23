@@ -27,7 +27,8 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6 mt-3 text-center">
-                        <h2 id="stock-title" class="card-title text-center">Stock Data for <span id="symbol" th:text="${symbol}"></span></h2>
+                        <h2 id="stock-title" class="card-title text-center">Stock Data for <span id="symbol" th:text="${symbol}"></span>
+                            <img th:src="${imageResponse}" width="30" height="30"></h2>
                         <p class="card-text">Current Price: $<span id="currentPrice" th:text="${stockData.currentPrice}"></span></p>
                         <p class="card-text">High Price: $<span th:text="${stockData.highPrice}"></span></p>
                         <p class="card-text">Low Price: $<span th:text="${stockData.lowPrice}"></span></p>
@@ -143,7 +144,107 @@
                     }
                 }
             });
+
+            let previousPrice = null;
+            let currentPrice = null;
+
+            // WebSocket
+            const apiKey = 'cq1jlm1r01qjh3d5pt90cq1jlm1r01qjh3d5pt9g';
+            const symbol = /*[[${symbol}]]*/ 'symbol';
+
+            const socket = new WebSocket(`wss://ws.finnhub.io?token=${apiKey}`);
+
+            socket.addEventListener('open', function (event) {
+                socket.send(JSON.stringify({'type': 'subscribe', 'symbol': symbol}));
+            });
+
+            socket.addEventListener('message', function (event) {
+                const data = JSON.parse(event.data);
+                if (data.type === 'trade') {
+                    currentPrice = data.data[0].p.toFixed(2);
+                }
+            });
+
+            setInterval(function() {
+                if (currentPrice !== null) {
+                    var priceElement = document.getElementById('currentPrice');
+                    priceElement.innerText = currentPrice;
+
+                    // Change the color based on price movement
+                    if (previousPrice !== null) {
+                        if (currentPrice > previousPrice) {
+                            priceElement.style.color = 'green';
+                        } else if (currentPrice < previousPrice) {
+                            priceElement.style.color = 'red';
+                        } else {
+                            priceElement.style.color = 'black'; // No change in price
+                        }
+                    }
+
+                    // Update the previous price
+                    previousPrice = currentPrice;
+                }
+            }, 1000);
+
+            socket.addEventListener('close', function (event) {
+                console.log('WebSocket connection closed:', event);
+            });
+
+            socket.addEventListener('error', function (error) {
+                console.error('WebSocket error:', error);
+            });
+
+            window.onbeforeunload = function() {
+                if (socket) {
+                    socket.close();
+                }
+            };
         });
+
+        function openForm() {
+            const symbol = document.getElementById("symbol").innerText;
+            const price = document.getElementById("currentPrice").innerText;
+            document.getElementById("modalSymbol").value = symbol;
+            document.getElementById("modalPrice").value = price;
+            document.getElementById("myModal").style.display = "block";
+        }
+
+        function closeForm() {
+            document.getElementById("myModal").style.display = "none";
+        }
+
+        function calculateTotal() {
+            const price = parseFloat(document.getElementById("modalPrice").value);
+            const quantity = parseInt(document.getElementById("quantity").value);
+            const total = price * quantity;
+            document.getElementById("total").value = total.toFixed(2);
+        }
+
+        function confirmTrade(event) {
+            event.preventDefault();
+            const total = parseFloat(document.getElementById("total").value);
+            const balance = parseFloat(document.getElementById("balance").innerText);
+            const quantity = parseInt(document.getElementById("quantity").value);
+            const quantityOwned = /*[[${quantityOwned}]]*/ 0;
+            const isPurchase = document.getElementById("buy").checked;
+
+            if (isPurchase) {
+                if (total > balance) {
+                    alert("Insufficient funds");
+                    return false;
+                }
+            } else {
+                if (quantity > quantityOwned) {
+                    alert("Insufficient shares");
+                    return false;
+                }
+            }
+
+            const confirmation = confirm("Confirm trade?");
+            if (confirmation) {
+                document.getElementById("buyForm").submit();
+            }
+        }
         
         /*]]>*/
     </script>
