@@ -28,3 +28,11 @@ function filterStocks() {
     var itemHeight = li[0].offsetHeight; 
     ul.style.height = (visibleItemCount * itemHeight) + 'px';
 }
+
+function checkTime(){
+    const now = new Date();
+    const currentDateTime = now.toLocaleString();
+    document.querySelector('#datetime').textContent = currentDateTime;
+}
+
+setInterval(checkTime, 1000);
