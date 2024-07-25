@@ -7,7 +7,7 @@
 </head>
 <body>
     <a id="return" class="btn btn-custom btn-lg m-2 mt-2" href="/api/stocks/">Back to List</a>
-    <h1>News Articles<span th:text="${symbol}"></span></h1>
+    <h1>News Articles For <span th:text="${symbol}"></span></h1>
     <div th:each="article : ${newsResponse.data}">
         <h2 th:text="${article.title}">Title</h2>
         <p th:text="${article.description}">Description</p>
