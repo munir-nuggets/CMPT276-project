@@ -3,7 +3,7 @@
 
 
 body{
-    background-color: #232946
+    background-color: #16161a
 }
 
 body, html {
@@ -14,21 +14,7 @@ body, html {
 }
 
 .auth-body{
-    min-height: 100vh; 
-    overflow: hidden;
-    background-image: linear-gradient(
-  180deg,
-  hsl(230deg 33% 21%) 0%,
-  hsl(230deg 32% 21%) 11%,
-  hsl(230deg 31% 21%) 30%,
-  hsl(229deg 30% 21%) 39%,
-  hsl(229deg 29% 22%) 46%,
-  hsl(229deg 27% 22%) 54%,
-  hsl(229deg 26% 22%) 61%,
-  hsl(229deg 25% 22%) 69%,
-  hsl(229deg 24% 23%) 79%,
-  hsl(229deg 23% 23%) 100%
-);
+   color: #16161a;
 
 }
 
@@ -42,20 +28,7 @@ body, html {
 }
 
 #homepage-body {
-    background-image: linear-gradient(
-        180deg,
-        hsl(230deg 33% 21%) 0%,
-        hsl(230deg 32% 21%) 11%,
-        hsl(230deg 31% 21%) 30%,
-        hsl(229deg 30% 21%) 39%,
-        hsl(229deg 29% 22%) 46%,
-        hsl(229deg 27% 22%) 54%,
-        hsl(229deg 26% 22%) 61%,
-        hsl(229deg 25% 22%) 69%,
-        hsl(229deg 24% 23%) 79%,
-        hsl(229deg 23% 23%) 100%
-      );
-      
+    background-color: #16161a;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -81,15 +54,15 @@ body, html {
 }
 
 .btn-custom {
-    background-color: #eebbc3; 
+    background-color: #7f5af0;
+    color: #fffffe;
     font-family: "Montserrat", sans-serif;
     font-weight: 500;
-    color: #232946;
     border: none; 
 }
 .btn-custom:hover {
     background-color: #fffffe; 
-    color: #232946; 
+    color:  #fffffe;
 }
 .btn-lg {
     font-size: 1.25rem;
@@ -113,7 +86,7 @@ body, html {
 }
 
 .navbar-custom {
-    background-color: #232946; 
+    background-color: #16161a; 
 }
 .navbar-custom .navbar-brand {
     color: #fffffe; 
@@ -138,7 +111,7 @@ body, html {
 
 
 #stock-container{
-    background-color: #b8c1ec;
+    background-color: white;
     font-family: "Lato", sans-serif;
     font-weight: 600;
     color: #121629;
@@ -158,7 +131,7 @@ body, html {
 }
 
 #admin-dashboard{
-    background-color: #b8c1ec;
+    background-color: #fffffe;
     font-family: "Lato", sans-serif;
     font-weight: 600;
     color: #121629;
@@ -182,7 +155,7 @@ body, html {
 }
 
 .footer {
-    background-color: #121629 !important;
+    background-color: #242629 !important;
     color: #fffffe !important;
     position: relative;
     bottom: 0;
@@ -201,14 +174,14 @@ body, html {
 
 
 #portfolio-table{
-    background-color: #b8c1ec;
+    background-color: #fffffe;
     font-family: "Lato", sans-serif;
     font-weight: 600;
     color: #121629;
     font-size: 1rem;
     line-height: 1.5;
 }
-
+#16161a
 #portfolio-table-title{
     color:#121629;
     font-family: "Montserrat", sans-serif;
@@ -218,7 +191,7 @@ body, html {
 }
 
 #account-overview{
-    background-color: #b8c1ec;
+    background-color: #fffffe;
     font-family: "Lato", sans-serif;
     font-weight: 600;
     color: #121629;
@@ -300,8 +273,8 @@ body, html {
 
 
 .dropdown-toggle {
-    background-color: #eebbc3; 
-    color: #232946;
+    background-color: #7f5af0; 
+    color: #fffffe;
     border: none;
     font-family: "Montserrat", sans-serif;
     font-weight: 500;
