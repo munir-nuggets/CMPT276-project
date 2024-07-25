@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News</title>
+</head>
+<body>
+    <a id="return" class="btn btn-custom btn-lg m-2 mt-2" href="/api/stocks/">Back to List</a>
+    <h1>News Articles<span th:text="${symbol}"></span></h1>
+    <div th:each="article : ${newsResponse.data}">
+        <h2 th:text="${article.title}">Title</h2>
+        <p th:text="${article.description}">Description</p>
+        <a th:href="${article.url}" th:text="${article.url}">URL</a>
+        <img th:src="${article.image_url}" alt="Article Image" />
+        <p th:text="${article.published_at}">Published At</p>
+        <p th:text="${article.source}">Source</p>
+    </div>
+</body>
+</html>
