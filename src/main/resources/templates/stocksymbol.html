@@ -29,7 +29,7 @@
                     <li><a class="dropdown-item" href="/leaderboard">Leaderboard</a></li>
                     <li>
                         <form action="/userlogout" method="post" class="d-inline">
-                            <button type="submit" class="dropdown-item">Log out</button>
+                            <button type="submit" class="dropdown-item text-danger">Log out</button>
                         </form>
                     </li>
                 </ul>
@@ -45,9 +45,7 @@
                     <div class="col-md-6 mt-3 text-center">
                         <h2 id="stock-title" class="card-title text-center">Stock Data for <span id="symbol" th:text="${symbol}"></span>
                             <img th:src="${company.logo}" width="30" height="30" style="margin: 0px 0px 10px 15px"></h2>
-                        <p class="card-text">
-                            Current Price: $<span id="currentPrice" th:class="${stockData.currentPrice > stockData.openingPrice} ? 'text-success' : 'text-danger'" th:text="${stockData.currentPrice}"></span>
-                        </p>
+                        <p class="card-text">Current Price: $<span id="currentPrice" th:text="${stockData.currentPrice}"></span></p>
                         <p class="card-text">High Price: $<span th:text="${stockData.highPrice}"></span></p>
                         <p class="card-text">Low Price: $<span th:text="${stockData.lowPrice}"></span></p>
                         <p class="card-text">Open Price: $<span th:text="${stockData.openingPrice}"></span></p>
@@ -57,8 +55,8 @@
                         <button type="button" class="btn btn-primary btn-lg m-2 mt-2" onclick="openForm()">Trade</button>
                         <!-- Form to navigate to news page -->
                         <form action="/news" method="get" class="d-inline">
-                            <input type="hidden" name="symbol" value="${symbol}" />
-                            <button type="submit" class="btn btn-info btn-lg m-2 mt-2">View News</button>
+                        <input type="hidden" name="symbol" value="${symbol}" />
+                        <button type="submit" class="btn btn-info btn-lg m-2 mt-2">View News</button>
                         </form>
                     </div>
                     <div class="col-md-6">
@@ -68,8 +66,6 @@
             </div>
         </div>
     </main>
-    
-    
 
     <!-- modals -->
     <div id="myModal" class="modal">
