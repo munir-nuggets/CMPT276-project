@@ -3,28 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link rel="stylesheet" href="/styles.css">
     <title>Leaderboard</title>
 </head>
 <body>
-    <h1>Leaderboard</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>Rank</th>
-                <th>Username</th>
-                <th>Account Value</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="user : ${users}">
-                <td th:text="${users.indexOf(user)+1}"></td>
-                <td th:text="${user.getUsername()}"></td>
-                <td th:text="${accountValues.get(user)}"></td>
-            </tr>
-        </tbody>
-    </table>
 
-    <br>
-    <a th:href="@{/}">Back to home page</a>
+    <nav class="navbar navbar-light navbar-custom">
+        <div class="container">
+            <a class="navbar-brand p-3">
+                <img src="/imgs/icons8-stock-96.png" width="30" height="30" alt="" loading="lazy" class="icon">
+                MarketMimic
+            </a>
+    
+            <div class="dropdown p-3 ml-3">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
+                   Menu
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                    <li><a class="dropdown-item" href="/currencyscreen">View Portfolio</a></li>
+                    <li><a class="dropdown-item" href="/api/stocks">Symbol Search</a></li>
+                    <li>
+                        <form action="/userlogout" method="post" class="d-inline">
+                            <button type="submit" class="dropdown-item text-danger">Log out</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+     <main class="container mt-4 mb-5">
+        <div id="admin-dashboard" class="card text-center">
+            <div class="card-body">
+                <h1 id="admin-dashboard-title" class="card-title mb-3">Leaderboard</h1>
+                <table class="table table-striped table-bordered">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Rank</th>
+                            <th>Username</th>
+                            <th>Account Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="user, iterStat : ${users}">
+                            <td th:text="${iterStat.index + 1}"></td>
+                            <td th:text="${user.username}"></td>
+                            <td th:text="'$' + ${accountValues.get(user)}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer mt-auto py-3 bg-light">
+        <div class="container text-center">
+            <span>© 2024 MarketMimic</span>
+            <a href="https://github.com/munir-nuggets/CMPT276-project" class="text-muted ml-2">
+                <img src="/imgs/github-mark-white.png" alt="GitHub" style="height: 24px;">
+            </a>            
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
 </html>
