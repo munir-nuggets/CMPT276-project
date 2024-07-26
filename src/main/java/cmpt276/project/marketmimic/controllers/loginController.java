@@ -84,7 +84,7 @@ public class loginController {
             return endpoint;
         }
         else {
-            return "invalidLogin";
+            return "invalidlogin";
         }
     }
 
