@@ -57,7 +57,7 @@
                         <button type="button" class="btn btn-primary btn-lg m-2 mt-2" onclick="openForm()">Trade</button>
                         <!-- Form to navigate to news page -->
                         <form action="/news" method="get" class="d-inline">
-                            <input type="hidden" name="symbol" value="${symbol}" />
+                            <input type="hidden" name="symbol" th:value="${symbol}" />
                             <button type="submit" class="btn btn-info btn-lg m-2 mt-2">View News</button>
                         </form>
                     </div>
