@@ -141,11 +141,10 @@ public class loginController {
             String resetLink = baseUrl + "/reset-password?token=" + token.getToken();
             emailService.sendEmail(user.getEmail(), "Password Reset Request", "Click the link to reset your password: " + resetLink);
 
-            model.addAttribute("message", "We have sent a reset password link to your email.");
+            return "email-sent";
         } else {
-            model.addAttribute("error", "No account found with the provided email.");
+            return "invalid-email";
         }
-        return "forgot-password";
     }
 
     @GetMapping("/reset-password")
