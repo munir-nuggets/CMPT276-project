@@ -27,7 +27,7 @@ public class NewsService {
     public NewsResponse getNewsForSymbol(String symbol) {
         logger.info("Fetching news for symbol: {}", symbol);
         try {
-            String urlString = "https://api.marketaux.com/v1/news/all?symbols=" + symbol + "&api_token=" + apiKey;
+            String urlString = "https://api.marketaux.com/v1/news/all?symbols=" + symbol + "&language=en&api_token=" + apiKey;
             URL url = new URL(urlString);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
