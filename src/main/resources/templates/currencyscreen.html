@@ -81,7 +81,8 @@
                             <tr>
                                 <th scope="col">Symbol</th>
                                 <th scope="col">Quantity</th>
-                                <th scope="col">Purchase price</th>
+                                <th scope="col">Purchase Price</th>
+                                <th scope="col">Current Price</th>
                                 <th scope="col">Return</th>
                             </tr>
                         </thead>
@@ -90,7 +91,8 @@
                                 <td><a th:href="@{/api/stocks/price(symbol=${purchase.symbol})}" th:text="${purchase.symbol}"></a></td>
                                 <td th:text="${purchase.getQuantity()}"></td>
                                 <td th:text="'$' + ${purchase.getPrice()}"></td>
-                                <td th:text="${stockReturns.get(purchase.symbol)} + '%'"></td>
+                                <td id="current-price-${purchase.symbol}" th:text="'$' + ${currentValues.get(purchase.symbol)}"></td>
+                                <td id="return-${purchase.symbol}" th:text="${stockReturns.get(purchase.symbol)} + '%'"></td>
                             </tr>
                         </tbody>
                     </table>
@@ -115,7 +117,80 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Establish WebSocket connection
+            const apiKey = 'cq1jlm1r01qjh3d5pt90cq1jlm1r01qjh3d5pt9g';
+            const socket = new WebSocket(`wss://ws.finnhub.io?token=${apiKey}`);
 
+            // Fetch all stock symbols in the portfolio
+            const stockSymbols = Array.from(document.querySelectorAll('tbody tr')).map(row => row.children[0].innerText);
+
+            let latestPrices = {};
+
+            // Connection opened
+            socket.addEventListener('open', function(event) {
+                stockSymbols.forEach(symbol => {
+                    socket.send(JSON.stringify({'type': 'subscribe', 'symbol': symbol}));
+                });
+            });
+
+            socket.addEventListener('message', function(event) {
+                const data = JSON.parse(event.data);
+                if (data.type === 'trade') {
+                    const symbol = data.data[0].s;
+                    var price = parseFloat(data.data[0].p).toFixed(2);
+
+                    latestPrices[symbol] = price;
+                }
+            });
+
+            // Update prices per second
+            setInterval(function() {
+                stockSymbols.forEach(symbol => {
+                    var price = latestPrices[symbol];
+                    if (price !== undefined) {
+                        var priceElement = document.getElementById(`current-price-${symbol}`);
+                        priceElement.innerText = `$${price}`;
+
+                        // Calculate and update the return
+                        const quantity = parseFloat(priceElement.parentElement.children[1].innerText);
+                        const purchasePrice = parseFloat(priceElement.parentElement.children[2].innerText.replace('$', ''));
+                        var stockReturn = ((price * quantity) / (purchasePrice * quantity)) * 100 - 100;
+                        var returnElement = document.getElementById(`return-${symbol}`);
+                        returnElement.innerText = `${stockReturn.toFixed(2)}%`;
+
+                        // Change the color based on price movement
+                        var previousPrice = parseFloat(priceElement.getAttribute('data-prev-price') || price);
+                        if (price > previousPrice) {
+                            priceElement.style.color = 'green';
+                        } else if (price < previousPrice) {
+                            priceElement.style.color = 'red';
+                        } else {
+                            priceElement.style.color = 'black';
+                        }
+                        priceElement.setAttribute('data-prev-price', price);
+                    }
+                });
+            }, 1000);
+
+            // Connection closed
+            socket.addEventListener('close', function(event) {
+                console.log('WebSocket connection closed:', event);
+            });
+
+            // Handle errors
+            socket.addEventListener('error', function(error) {
+                console.error('WebSocket error:', error);
+            });
+
+            window.onbeforeunload = function() {
+                if (socket) {
+                    socket.close();
+                }
+            };
+        });
+    </script>
 </body>
 
 </html>
