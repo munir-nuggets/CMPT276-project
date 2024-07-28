@@ -54,6 +54,9 @@ public class apiController {
         if(user == null) return "redirect:/login.html";
         model.addAttribute("user", user);
 
+        String marketStatusUrl = "https://finnhub.io/api/v1/stock/market-status?exchange=US&token=" + apiConfig.getApiKey();
+        MarketStatus marketStatus = restTemplate.getForObject(marketStatusUrl, MarketStatus.class);
+
         String symbolsUrl = "https://finnhub.io/api/v1/stock/symbol?exchange=US&token=" + apiConfig.getApiKey();
         ResponseEntity<List<StockSymbol>> response = restTemplate.exchange(
                 symbolsUrl,
@@ -64,6 +67,7 @@ public class apiController {
         List<StockSymbol> symbolsResponse = response.getBody();
         Collections.sort(symbolsResponse, Comparator.comparing(StockSymbol::getDescription));
         model.addAttribute("symbols", symbolsResponse);
+        model.addAttribute("status", marketStatus);
         return "stocklist";
     }
 
@@ -78,6 +82,9 @@ public class apiController {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
+
+        String marketStatusUrl = "https://finnhub.io/api/v1/stock/market-status?exchange=US&token=" + apiConfig.getApiKey();
+        MarketStatus marketStatus = restTemplate.getForObject(marketStatusUrl, MarketStatus.class);
 
         String quoteUrl = "https://finnhub.io/api/v1/quote?symbol=" + symbol + "&token=" + apiConfig.getApiKey();
         StockData stockData = restTemplate.getForObject(quoteUrl, StockData.class);
@@ -95,6 +102,7 @@ public class apiController {
         model.addAttribute("stockDataResponse", stockDataResponseJson);
         model.addAttribute("user", user);
         model.addAttribute("company", companyInfo);
+        model.addAttribute("status", marketStatus);
         double quantityOwned = user.getStockPurchases().containsKey(symbol) ? user.getStockPurchases().get(symbol).getQuantity() : 0;
         model.addAttribute("quantityOwned", quantityOwned);
 

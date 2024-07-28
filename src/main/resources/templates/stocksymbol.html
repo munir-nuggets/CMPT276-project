@@ -41,9 +41,12 @@
     <main class="container">
         <div id="stock-container" class="card">
             <div class="card-body">
-                <div id="marketClosedMessage" class="alert alert-warning text-center" style="display: none;">
-                    The market is open during (Monday to Friday, 9:30 AM to 4:00 PM).<br>
-                    You can still buy the stocks but at the rate of Next day Open Market prices.
+                <div id="marketClosedMessage" class="alert alert-warning text-center" th:if="${!status.isOpen} and ${status.holiday} == null">
+                    The US stock market is open on weekdays from 9:30 AM to 4:00 PM EST.<br>
+                    You can still submit trades beyond these times, however, orders will be executed at the opening price of the next market day.
+                </div>
+                <div id="holidayMessage" class="alert alert-info text-center" th:if="${status.holiday} != null">
+                    The US stock market is closed today due to ${status.holiday}.
                 </div>
                 <div class="row">
                     <div class="col-md-6 mt-3 text-center">
