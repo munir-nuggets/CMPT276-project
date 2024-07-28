@@ -40,6 +40,10 @@
     <main class="flex-grow-1">
         <h1 id="stocklist-title" class="text-center mb-5">Search for a Symbol</h1>
 
+        <div id="marketClosedMessage" class="alert alert-warning text-center" style="display: none;">
+            The market is currently closed. Please check back during market hours (Monday to Friday, 9:30 AM to 4:00 PM).
+        </div>
+
         <div class="input-group mx-auto" style="width: 75%;">
             <input type="text" id="searchInput" class="form-control" placeholder="Search for symbols..." oninput="filterStocks()">
         </div>
