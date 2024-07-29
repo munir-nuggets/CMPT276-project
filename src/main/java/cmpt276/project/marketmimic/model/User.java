@@ -94,12 +94,15 @@ public class User {
                 stockPurchases.remove("*" + stockPurchase.getSymbol());
             }
         } else if (stockPurchase.isPending()){
-            if (stockPurchases.containsKey("*" + stockPurchase.getSymbol())) {
+            if (stockPurchase.isBuy() && stockPurchases.containsKey("*" + stockPurchase.getSymbol())) {
                 double quantity = stockPurchases.get("*" + stockPurchase.getSymbol()).getQuantity();
-                if (stockPurchase.isBuy()) stockPurchases.get("*" + stockPurchase.getSymbol()).setQuantity(quantity + stockPurchase.getQuantity());
-                else stockPurchases.get("*" + stockPurchase.getSymbol()).setQuantity(quantity - stockPurchase.getQuantity());
+                stockPurchases.get("*" + stockPurchase.getSymbol()).setQuantity(quantity + stockPurchase.getQuantity());
+            } else if (!stockPurchase.isBuy() && stockPurchases.containsKey("**" + stockPurchase.getSymbol())){
+                double quantity = stockPurchases.get("**" + stockPurchase.getSymbol()).getQuantity();
+                stockPurchases.get("**" + stockPurchase.getSymbol()).setQuantity(quantity + stockPurchase.getQuantity());
             } else {
-                stockPurchases.put("*" + stockPurchase.getSymbol(), stockPurchase);
+                if (stockPurchase.isBuy()) stockPurchases.put("*" + stockPurchase.getSymbol(), stockPurchase);
+                else stockPurchases.put("**" + stockPurchase.getSymbol(), stockPurchase);
             }
         } else {
             stockPurchases.put(stockPurchase.getSymbol(), stockPurchase);

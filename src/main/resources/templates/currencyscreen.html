@@ -87,21 +87,44 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr th:each="purchase : ${purchases}">
+                            <tr th:each="purchase : ${purchases}" th:if="${!purchase.isPending}">
                                 <td><a th:href="@{/api/stocks/price(symbol=${purchase.symbol})}" th:text="${purchase.symbol}"></a></td>
                                 <td th:text="${purchase.getQuantity()}"></td>
-                                <td th:text="Pending" th:if="${purchase.isPending}"></td>
-                                <td th:text="'$' + ${purchase.getPrice()}" th:if="${!purchase.isPending}"></td>
-                                <td th:text="Pending" th:if="${purchase.isPending}"></td>
-                                <td id="current-price-${purchase.symbol}" th:text="'$' + ${currentValues.get(purchase.symbol)}" th:if="${!purchase.isPending}"></td>
-                                <td th:text="Pending" th:if="${purchase.isPending}"></td>
-                                <td id="return-${purchase.symbol}" th:text="${stockReturns.get(purchase.symbol)} + '%'" th:if="${!purchase.isPending}"></td>
+                                <td th:text="'$' + ${purchase.getPrice()}"></td>
+                                <td id="current-price-${purchase.symbol}" th:text="'$' + ${currentValues.get(purchase.symbol)}"></td>
+                                <td id="return-${purchase.symbol}" th:text="${stockReturns.get(purchase.symbol)} + '%'"></td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="container mt-4">
+        <div id = "portfolio-table" class="card">
+            <div class="card-body">
+                <h4 id = "portfolio-table-title" class="card-title mb-3">Your Pending Trades</h1>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">Symbol</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Type</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="purchase : ${purchases}" th:if="${purchase.isPending}">
+                                <td><a th:href="@{/api/stocks/price(symbol=${purchase.symbol})}" th:text="${purchase.symbol}"></a></td>
+                                <td th:text="${purchase.getQuantity()}"></td>
+                                <td th:text="Buy" th:if="${purchase.isBuy}"></td>
+                                <td th:text="Sell" th:if="${!purchase.isBuy}"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
     

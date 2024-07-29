@@ -87,7 +87,7 @@ public class CurrencyService {
 
     public void checkPendingTrades(User user) {
         LocalDate currentDate = LocalDate.now();
-        double test = fmpService.nextOpeningPrice("AAPL", LocalDate.of(2024, 07, 25));
+        //double test = fmpService.nextOpeningPrice("AAPL", LocalDate.of(2024, 07, 25));
         user.getStockPurchases().values().stream()
             .filter(StockPurchase::isPending)
             .filter(stock -> stock.getPendingDate().isBefore(currentDate))
