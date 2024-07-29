@@ -1,7 +1,9 @@
 package cmpt276.project.marketmimic.service;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -88,21 +90,29 @@ public class CurrencyService {
     public void checkPendingTrades(User user) {
         LocalDate currentDate = LocalDate.now();
         //double test = fmpService.nextOpeningPrice("AAPL", LocalDate.of(2024, 07, 25));
-        user.getStockPurchases().values().stream()
-            .filter(StockPurchase::isPending)
-            .filter(stock -> stock.getPendingDate().isBefore(currentDate))
-            .forEach(stock -> {
-                double openPrice = fmpService.nextOpeningPrice(stock.getSymbol(), stock.getPendingDate());
-                if (openPrice != -9999.99) {
-                    stock.setPending(false);
-                    stock.setPendingDate(null);
-                    if (stock.isBuy()) {
-                        purchaseStock(stock.getSymbol(), stock.getQuantity(), openPrice, user);
-                    } else {
-                        sellStock(stock.getSymbol(), stock.getQuantity(), openPrice, user);
+        // Collect pending trades to a separate list to avoid concurrent modification
+        List<StockPurchase> pendingTrades = user.getStockPurchases().values().stream()
+                .filter(StockPurchase::isPending)
+                .filter(stock -> stock.getPendingDate().isBefore(currentDate))
+                .collect(Collectors.toList());
+
+        // Process each pending trade
+        for (StockPurchase stock : pendingTrades) {
+            double openPrice = fmpService.nextOpeningPrice(stock.getSymbol(), stock.getPendingDate());
+            if (openPrice != -9999.99) {
+                if (stock.isBuy()) {
+                    purchaseStock(stock.getSymbol(), stock.getQuantity(), openPrice, user);
+                    if (user.getStockPurchases().containsKey("*" + stock.getSymbol())) {
+                        user.getStockPurchases().remove("*" + stock.getSymbol());
+                    }
+                } else {
+                    sellStock(stock.getSymbol(), stock.getQuantity(), openPrice, user);
+                    if (user.getStockPurchases().containsKey("**" + stock.getSymbol())) {
+                        user.getStockPurchases().remove("**" + stock.getSymbol());
                     }
                 }
-            });
+            }
+        }
     }
 
     private void addPendingTrade(String symbol, double quantity, double price, User user, boolean isBuy) {

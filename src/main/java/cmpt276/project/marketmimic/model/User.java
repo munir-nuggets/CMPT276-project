@@ -90,9 +90,6 @@ public class User {
             StockPurchase existingStockPurchase = stockPurchases.get(stockPurchase.getSymbol());
             existingStockPurchase.setQuantity(existingStockPurchase.getQuantity() + stockPurchase.getQuantity());
             existingStockPurchase.setPrice(existingStockPurchase.getPrice() + stockPurchase.getPrice());
-            if (stockPurchases.containsKey("*" + stockPurchase.getSymbol())) {
-                stockPurchases.remove("*" + stockPurchase.getSymbol());
-            }
         } else if (stockPurchase.isPending()){
             if (stockPurchase.isBuy() && stockPurchases.containsKey("*" + stockPurchase.getSymbol())) {
                 double quantity = stockPurchases.get("*" + stockPurchase.getSymbol()).getQuantity();
