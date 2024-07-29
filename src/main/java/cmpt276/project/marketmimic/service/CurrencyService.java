@@ -1,5 +1,6 @@
 package cmpt276.project.marketmimic.service;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,9 @@ public class CurrencyService {
     @Autowired
     private FinnhubService finnhubService;
 
+    @Autowired
+    private FmpService fmpService;
+
     public void addCurrency(User user, double amount) {
         user.setUsd(user.getUsd() + amount);
         userRepository.save(user);
@@ -28,10 +32,12 @@ public class CurrencyService {
     }
 
     public void purchaseStock(String symbol, double quantity, double price, User user) {
-        if (user.getUsd() < price) 
+        if (user.getUsd() < price) return;
+        if (price == -9999.99) {
+            addPendingTrade(symbol, quantity, price, user, true);
             return;
-        
-        StockPurchase stockPurchase = new StockPurchase(symbol, quantity, price);
+        }
+        StockPurchase stockPurchase = new StockPurchase(symbol, quantity, price, false, null, true);
         user.addStockPurchase(stockPurchase);
         user.setUsd(user.getUsd() - price);
 
@@ -42,6 +48,10 @@ public class CurrencyService {
         StockPurchase purchasedStock = user.getStockPurchases().get(symbol);
         if(purchasedStock == null || purchasedStock.getQuantity() < sellingQuantity) {
             System.out.println("User does not own enough stock to sell");
+            return;
+        }
+        if (price == -9999.99) {
+            addPendingTrade(symbol, sellingQuantity, price, user, false);
             return;
         }
 
@@ -73,5 +83,31 @@ public class CurrencyService {
             totalStockValue += currentStockWorth;
         }
         return totalStockValue + user.getUsd();
+    }
+
+    public void checkPendingTrades(User user) {
+        LocalDate currentDate = LocalDate.now();
+        double test = fmpService.nextOpeningPrice("AAPL", LocalDate.of(2024, 07, 25));
+        user.getStockPurchases().values().stream()
+            .filter(StockPurchase::isPending)
+            .filter(stock -> stock.getPendingDate().isBefore(currentDate))
+            .forEach(stock -> {
+                double openPrice = fmpService.nextOpeningPrice(stock.getSymbol(), stock.getPendingDate());
+                if (openPrice != -9999.99) {
+                    stock.setPending(false);
+                    stock.setPendingDate(null);
+                    if (stock.isBuy()) {
+                        purchaseStock(stock.getSymbol(), stock.getQuantity(), openPrice, user);
+                    } else {
+                        sellStock(stock.getSymbol(), stock.getQuantity(), openPrice, user);
+                    }
+                }
+            });
+    }
+
+    private void addPendingTrade(String symbol, double quantity, double price, User user, boolean isBuy) {
+        StockPurchase pendingTrade = new StockPurchase(symbol, quantity, price, true, LocalDate.now(), isBuy);
+        user.addStockPurchase(pendingTrade);
+        userRepository.save(user);
     }
 }

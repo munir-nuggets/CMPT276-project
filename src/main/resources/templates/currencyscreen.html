@@ -90,9 +90,11 @@
                             <tr th:each="purchase : ${purchases}">
                                 <td><a th:href="@{/api/stocks/price(symbol=${purchase.symbol})}" th:text="${purchase.symbol}"></a></td>
                                 <td th:text="${purchase.getQuantity()}"></td>
-                                <td th:text="'$' + ${purchase.getPrice()}"></td>
+                                <td th:text="Pending" th:if="${purchase.isPending}"></td>
+                                <td th:text="'$' + ${purchase.getPrice()}" th:if="${!purchase.isPending}"></td>
                                 <td id="current-price-${purchase.symbol}" th:text="'$' + ${currentValues.get(purchase.symbol)}"></td>
-                                <td id="return-${purchase.symbol}" th:text="${stockReturns.get(purchase.symbol)} + '%'"></td>
+                                <td th:text="Pending" th:if="${purchase.isPending}"></td>
+                                <td id="return-${purchase.symbol}" th:text="${stockReturns.get(purchase.symbol)} + '%'" th:if="${!purchase.isPending}"></td>
                             </tr>
                         </tbody>
                     </table>

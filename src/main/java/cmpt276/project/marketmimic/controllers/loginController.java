@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import cmpt276.project.marketmimic.model.User;
 import cmpt276.project.marketmimic.model.PasswordResetToken;
 import cmpt276.project.marketmimic.model.UserRepository;
+import cmpt276.project.marketmimic.service.CurrencyService;
 import cmpt276.project.marketmimic.service.EmailService;
 import cmpt276.project.marketmimic.service.TokenService;
 
@@ -33,6 +34,8 @@ public class loginController {
     private EmailService emailService;
     @Autowired
     private TokenService tokenService;
+    @Autowired
+    private CurrencyService currencyService;
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Value("${app.base-url}")
@@ -80,6 +83,7 @@ public class loginController {
             User user = userOpt.get();
             request.getSession().setAttribute("session_user", user);
             model.addAttribute("user", user);
+            currencyService.checkPendingTrades(user);
             String endpoint = user.isIsadmin() ? "redirect:/admin/dashboard" : "redirect:/api/stocks/";
             return endpoint;
         }
