@@ -101,12 +101,12 @@ public class CurrencyService {
             double openPrice = fmpService.nextOpeningPrice(stock.getSymbol(), stock.getPendingDate());
             if (openPrice != -9999.99) {
                 if (stock.isBuy()) {
-                    purchaseStock(stock.getSymbol(), stock.getQuantity(), openPrice, user);
+                    purchaseStock(stock.getSymbol(), stock.getQuantity(), openPrice*stock.getQuantity(), user);
                     if (user.getStockPurchases().containsKey("*" + stock.getSymbol())) {
                         user.getStockPurchases().remove("*" + stock.getSymbol());
                     }
                 } else {
-                    sellStock(stock.getSymbol(), stock.getQuantity(), openPrice, user);
+                    sellStock(stock.getSymbol(), stock.getQuantity(), openPrice*stock.getQuantity(), user);
                     if (user.getStockPurchases().containsKey("**" + stock.getSymbol())) {
                         user.getStockPurchases().remove("**" + stock.getSymbol());
                     }
