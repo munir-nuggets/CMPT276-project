@@ -86,10 +86,15 @@ public class User {
         this.stockPurchases = stockPurchases;
     }
     public void addStockPurchase(StockPurchase stockPurchase) {
-        if(stockPurchases.containsKey(stockPurchase.getSymbol())) {
+        if(stockPurchases.containsKey(stockPurchase.getSymbol()) && !(stockPurchase.isPending())) {
             StockPurchase existingStockPurchase = stockPurchases.get(stockPurchase.getSymbol());
             existingStockPurchase.setQuantity(existingStockPurchase.getQuantity() + stockPurchase.getQuantity());
             existingStockPurchase.setPrice(existingStockPurchase.getPrice() + stockPurchase.getPrice());
+            if (stockPurchases.containsKey("*" + stockPurchase.getSymbol())) {
+                stockPurchases.remove("*" + stockPurchase.getSymbol());
+            }
+        } else if (stockPurchase.isPending()){
+            stockPurchases.put("*" + stockPurchase.getSymbol(), stockPurchase);
         } else {
             stockPurchases.put(stockPurchase.getSymbol(), stockPurchase);
         }

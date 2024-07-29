@@ -33,7 +33,7 @@ public class CurrencyService {
 
     public void purchaseStock(String symbol, double quantity, double price, User user) {
         if (user.getUsd() < price) return;
-        if (price == -9999.99) {
+        if (price <= -9999.99) {
             addPendingTrade(symbol, quantity, price, user, true);
             return;
         }
@@ -50,7 +50,7 @@ public class CurrencyService {
             System.out.println("User does not own enough stock to sell");
             return;
         }
-        if (price == -9999.99) {
+        if (price <= -9999.99) {
             addPendingTrade(symbol, sellingQuantity, price, user, false);
             return;
         }

@@ -55,12 +55,14 @@ public class CurrencyController {
         Map<String, Double> currentValues = new java.util.HashMap<>();
         Double totalStockValue = 0.0;
         for(StockPurchase stock : user.getStockPurchases().values()){
-            Double currentStockWorth = finnhubService.getSinglePrice(stock.getSymbol()) * stock.getQuantity();
-            totalStockValue += currentStockWorth;
-            Double stockReturn = (currentStockWorth / stock.getPrice());
-            stockReturn = Math.round(stockReturn * 1000.0) / 10.0;
-            stockReturns.put(stock.getSymbol(), stockReturn);
-            currentValues.put(stock.getSymbol(), currentStockWorth);
+            if (!stock.isPending()) {
+                Double currentStockWorth = finnhubService.getSinglePrice(stock.getSymbol()) * stock.getQuantity();
+                totalStockValue += currentStockWorth;
+                Double stockReturn = (currentStockWorth / stock.getPrice());
+                stockReturn = Math.round(stockReturn * 1000.0) / 10.0;
+                stockReturns.put(stock.getSymbol(), stockReturn);
+                currentValues.put(stock.getSymbol(), currentStockWorth);
+            }
         }
         model.addAttribute("stockReturns", stockReturns);
         model.addAttribute("currentValues", currentValues);
