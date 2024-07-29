@@ -1,5 +1,8 @@
 package cmpt276.project.marketmimic.controllers;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,8 +51,11 @@ public class CurrencyController {
         User user = (User) session.getAttribute("session_user");
         if(user==null) return "redirect:/login.html";
 
+        List<StockPurchase> purchaseList = new ArrayList<>(user.getStockPurchases().values());
+        purchaseList.sort(Comparator.comparing(StockPurchase::getSymbol));
+
         model.addAttribute("usd", currencyService.getCurrencyBalance(user.getUsername()));
-        model.addAttribute("purchases", user.getStockPurchases().values());
+        model.addAttribute("purchases", purchaseList);
 
         Map<String, Double> stockReturns = new java.util.HashMap<>();
         Map<String, Double> currentValues = new java.util.HashMap<>();
