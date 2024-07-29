@@ -104,7 +104,10 @@ public class apiController {
         model.addAttribute("company", companyInfo);
         model.addAttribute("status", marketStatus);
         double quantityOwned = user.getStockPurchases().containsKey(symbol) ? user.getStockPurchases().get(symbol).getQuantity() : 0;
+        quantityOwned += user.getStockPurchases().containsKey("*" + symbol) ? user.getStockPurchases().get("*" + symbol).getQuantity() : 0;
+        double pendingSellingQuantity = user.getStockPurchases().containsKey("**" + symbol) ? user.getStockPurchases().get("**" + symbol).getQuantity() : 0;
         model.addAttribute("quantityOwned", quantityOwned);
+        model.addAttribute("pendingSellingQuantity", pendingSellingQuantity);
 
         return "stocksymbol";
     }

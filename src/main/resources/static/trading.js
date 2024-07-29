@@ -27,6 +27,7 @@ function confirmTrade(event) {
     const balance = parseFloat(document.getElementById("balance").innerText);
     const quantity = parseInt(document.getElementById("quantity").value);
     const quantityOwned = /*[[${quantityOwned}]]*/ 0;
+    const pendingSellingQuantity = /*[[${pendingSellingQuantity}]]*/ 0;
     const isPurchase = document.getElementById("buy").checked;
 
     if (isPurchase) {
@@ -35,7 +36,7 @@ function confirmTrade(event) {
             return false;
         }
     } else {
-        if (quantity > quantityOwned) {
+        if ((quantity + pendingSellingQuantity) > quantityOwned) {
             alert("Insufficient shares");
             return false;
         }
