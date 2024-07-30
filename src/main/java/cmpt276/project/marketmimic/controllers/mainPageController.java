@@ -42,4 +42,9 @@ public class mainPageController {
         model.addAttribute("accountValues", accountValues);
         return "leaderboard";
     }
+
+    @GetMapping("/learn")
+    public String learn() {
+        return "learn";
+    }
 }
