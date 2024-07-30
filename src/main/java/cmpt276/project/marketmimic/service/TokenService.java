@@ -17,8 +17,6 @@ import jakarta.transaction.Transactional;
 
 @Service
 public class TokenService {
-
-    // Method to generate a new token with an expiry time of one hour
     @Autowired
     private PasswordResetTokenRepository tokenRepository;
 
@@ -27,25 +25,19 @@ public class TokenService {
 
     @Transactional
     public PasswordResetToken createToken(User user) {
-        // Check if a token already exists for the user
         PasswordResetToken existingToken = tokenRepository.findByUser(user);
         if (existingToken != null && !isTokenExpired(existingToken)) {
-            return existingToken; // Return existing token if not expired
+            return existingToken;
         }
         
-        // Generate new token and expiry date
-        String tokenValue = generateToken(); // Implement your token generation logic
-        LocalDateTime expiryDate = LocalDateTime.now().plusHours(1); // Example: Token expires in 24 hours
+        String tokenValue = generateToken();
+        LocalDateTime expiryDate = LocalDateTime.now().plusHours(1);
 
-        // Create new PasswordResetToken entity
         PasswordResetToken token = new PasswordResetToken(tokenValue, user, expiryDate);
         return tokenRepository.save(token);
     }
-
-    // Implement your token generation logic here
     
     private String generateToken() {
-        // Implement your token generation logic (e.g., UUID.randomUUID().toString())
         return UUID.randomUUID().toString();
     }
 
@@ -59,21 +51,18 @@ public class TokenService {
         Optional<PasswordResetToken> resetTokenOptional = tokenRepository.findByToken(token);
     
         if (!resetTokenOptional.isPresent()) {
-            return Optional.empty(); // or throw an exception
+            return Optional.empty();
         }
     
         PasswordResetToken resetToken = resetTokenOptional.get();
     
         if (resetToken.getExpiryDate().isBefore(LocalDateTime.now())) {
             tokenRepository.delete(resetToken);
-            return Optional.empty(); // or throw an exception
+            return Optional.empty();
         }
     
         return resetTokenOptional;
     }
-    
-
-    // Get user by token
     
     public Optional<User> getUserByToken(String token) {
         Optional<PasswordResetToken> optionalToken = tokenRepository.findByToken(token);
@@ -92,10 +81,9 @@ public class TokenService {
             PasswordResetToken passwordResetToken = optionalToken.get();
             if (passwordResetToken.getExpiryDate().isAfter(LocalDateTime.now())) {
                 User user = passwordResetToken.getUser();
-                // Set the new password (ensure it is properly encoded before setting)
                 user.setPassword(newPassword);
-                userRepository.save(user); // Save the updated user
-                tokenRepository.delete(passwordResetToken); // Invalidate the token
+                userRepository.save(user);
+                tokenRepository.delete(passwordResetToken);
                 return true;
             }
         }

@@ -1,0 +1,51 @@
+{
+    "Stock Market Basics": [
+        "https://www.forbes.com/advisor/in/investing/what-is-stock-market/",
+        "https://www.td.com/ca/en/investing/direct-investing/articles/what-is-stock-market",
+        "https://www.investopedia.com/terms/s/stockmarket.asp"
+    ],
+    "Types of Stocks": [
+        "https://corporatefinanceinstitute.com/resources/equities/common-vs-preferred-shares/",
+        "https://www.investopedia.com/terms/b/bluechipstock.asp",
+        "https://corporatefinanceinstitute.com/resources/career-map/sell-side/capital-markets/growth-stocks-vs-value-stocks/#:~:text=The%20act%20of%20investing%20in,similar%20stocks%20in%20the%20market.",
+        "https://www.td.com/ca/en/investing/direct-investing/articles/dividend-stocks#:~:text=What%20are%20dividend%20stocks%3F,a%20return%20from%20their%20investment."
+    ],
+    "How the Stock Market Works": [
+        "Order types (market, limit, stop-loss)",
+        "Bid-ask spread",
+        "Market participants (retail investors, institutional investors)"
+    ],
+    "How to Start Investing": [
+        "Setting financial goals",
+        "Choosing a brokerage account",
+        "Building an investment portfolio"
+    ],
+    "Buying and Selling Stocks": [
+        "Placing a trade (buying and selling)",
+        "Understanding stock quotes",
+        "Reading stock tickers"
+    ],
+    "Risk Management": [
+        "Diversification",
+        "Setting stop-loss orders",
+        "Understanding market volatility"
+    ],
+    "Stock Market Indices": [
+        "Major indices (e.g., S&P 500, Dow Jones, NASDAQ Composite)",
+        "How indices are used"
+    ],
+    "Basic Stock Analysis": [
+        "Introduction to fundamental analysis (basic financial statements)",
+        "Introduction to technical analysis (basic charts)"
+    ],
+    "Investment Strategies": [
+        "Buy and hold",
+        "Basic value investing",
+        "Basic growth investing"
+    ],
+    "Tools and Resources": [
+        "Stock screeners",
+        "Financial news sources",
+        "Investment apps and software"
+    ]
+}

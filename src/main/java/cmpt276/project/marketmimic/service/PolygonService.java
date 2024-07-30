@@ -1,31 +1,47 @@
 package cmpt276.project.marketmimic.service;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import cmpt276.project.marketmimic.model.StockDataResponse;
 
 @Service
 public class PolygonService {
 
-    private final RestTemplate restTemplate;
+    @Value("${polygon.api.key}")
+    private String apiKey;
 
-    public PolygonService(RestTemplateBuilder restTemplateBuilder) {
+    private final RestTemplate restTemplate;
+    private final ObjectMapper objectMapper;
+
+    public PolygonService(RestTemplateBuilder restTemplateBuilder, ObjectMapper objectMapper) {
         this.restTemplate = restTemplateBuilder.build();
+        this.objectMapper = objectMapper;
     }
 
-    public StockDataResponse getStockData(String ticker) {
-        LocalDate endDate = LocalDate.now();
-        LocalDate startDate = endDate.minusYears(1);
+    public String getHistoricalData(String ticker) {
+        String stockDataUrl = "https://api.polygon.io/v2/aggs/ticker/" + ticker + "/range/1/day/" + getOneYearAgo() + "/" + getCurrentDate() + "?apiKey=" + apiKey;
+        StockDataResponse stockDataResponse = restTemplate.getForObject(stockDataUrl, StockDataResponse.class);
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        String startDateString = startDate.format(formatter);
-        String endDateString = endDate.format(formatter);
-        String url = "https://api.polygon.io/v2/aggs/ticker/" + ticker + "/range/1/day/" + startDateString + "/" + endDateString + "?adjusted=true&sort=asc&apiKey=oKU_VAKwXYjlkUoMeB2CodWt1hQmCYI3";
-        return restTemplate.getForObject(url, StockDataResponse.class);
+        String stockDataResponseJson = "";
+        try {
+            stockDataResponseJson = objectMapper.writeValueAsString(stockDataResponse);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return stockDataResponseJson;
+    }
+
+    private String getCurrentDate() {
+        return java.time.LocalDate.now().toString();
+    }
+
+    private String getOneYearAgo() {
+        return java.time.LocalDate.now().minusYears(1).toString();
     }
 }

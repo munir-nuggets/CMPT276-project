@@ -92,13 +92,11 @@ public class CurrencyService {
     public void checkPendingTrades(User user) {
         LocalDate currentDate = LocalDate.now();
         //double test = fmpService.nextOpeningPrice("AAPL", LocalDate.of(2024, 07, 25));
-        // Collect pending trades to a separate list to avoid concurrent modification
         List<StockPurchase> pendingTrades = user.getStockPurchases().values().stream()
                 .filter(StockPurchase::isPending)
                 .filter(stock -> stock.getPendingDate().isBefore(currentDate))
                 .collect(Collectors.toList());
 
-        // Process each pending trade
         for (StockPurchase stock : pendingTrades) {
             double openPrice = fmpService.nextOpeningPrice(stock.getSymbol(), stock.getPendingDate());
             if (openPrice != -9999.99) {
