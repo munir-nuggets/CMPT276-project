@@ -5,12 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Learn</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="/learnscript.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
     <style>
         body {
             display: flex;
         }
         .sidebar {
-            width: 250px;
+            width: 275px;
             background-color: #f8f9fa;
             padding: 20px;
             height: 100vh;
@@ -62,48 +64,5 @@
 
     </div>
 </body>
-<script>
-    let contentData = {};
-    let contents;
-
-    document.addEventListener("DOMContentLoaded", function() {
-        fetch('learningArticles/basics.txt')
-            .then(response => response.text())
-            .then(data => {
-                contents = data;
-            })
-            .catch(error => console.error('Error loading txt data:', error));
-    });
-
-    // Fetch JSON data when the page loads
-    document.addEventListener("DOMContentLoaded", function() {
-        fetch('content.json')
-            .then(response => response.json())
-            .then(data => {
-                contentData = data;
-            })
-            .catch(error => console.error('Error loading JSON data:', error));
-    });
-
-    function loadContent(contentKey) {
-        const content = contentData[contentKey];
-        console.log(content);
-        if (content) {
-            const mainContent = document.getElementById('main-content');
-            let bodyContent = '<ul>';
-            content.forEach(item => {
-                console.log(item);
-                bodyContent += `<li><a href="${item}">${item}<a></li>`;
-            });
-            bodyContent += '</ul>';
-            mainContent.innerHTML = `<h2>${contentKey}</h2>${bodyContent}`;
-            //mainContent.innerHTML = `<p> ${contents} </p>`;
-        } else {
-            console.error('Content not found for key:', contentKey);
-        }
-    }
-
-        
-</script>
 
 </html>
