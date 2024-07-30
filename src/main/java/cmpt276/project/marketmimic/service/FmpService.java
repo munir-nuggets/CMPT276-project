@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -15,6 +16,10 @@ import cmpt276.project.marketmimic.model.PendingTradeStockData.StockData;
 
 @Service
 public class FmpService {
+
+    @Value("${fmp.api.key}")
+    private String apiKey;
+
     private final RestTemplate restTemplate;
 
     public FmpService(RestTemplateBuilder restTemplateBuilder, ObjectMapper objectMapper) {
@@ -22,7 +27,7 @@ public class FmpService {
     }
 
     public double nextOpeningPrice(String symbol, LocalDate date) {
-        String priceUrl = "https://financialmodelingprep.com/api/v3/historical-price-full/" + symbol + "?from=" + date + "&apikey=zJOJWBkjzsqVocWjAavycLoKIqVjxCqp";
+        String priceUrl = "https://financialmodelingprep.com/api/v3/historical-price-full/" + symbol + "?from=" + date + "&apikey=" + apiKey;
         PendingTradeStockData pendingTradeStockData = restTemplate.getForObject(priceUrl, PendingTradeStockData.class);
 
         if (pendingTradeStockData.getHistorical() == null) {
@@ -31,11 +36,9 @@ public class FmpService {
 
         List<StockData> list = pendingTradeStockData.getHistorical();
 
-        // Find the MyObject instance with the earliest date
         Optional<StockData> earliestObject = list.stream()
             .min((o1, o2) -> o1.getDate().compareTo(o2.getDate()));
 
-        // If an object is present, get the open field; otherwise, handle the case when the list is empty
         double earliestOpen = earliestObject
             .map(StockData::getOpen)
             .orElseThrow(() -> new RuntimeException("List is empty"));

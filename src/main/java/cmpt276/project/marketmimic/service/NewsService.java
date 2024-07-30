@@ -22,7 +22,7 @@ public class NewsService {
     private static final Logger logger = LoggerFactory.getLogger(NewsService.class);
 
     @Value("${marketaux.api.key}")
-    private String apiKey; // Replace with your actual API key
+    private String apiKey;
 
     public NewsResponse getNewsForSymbol(String symbol) {
         logger.info("Fetching news for symbol: {}", symbol);
