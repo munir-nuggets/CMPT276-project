@@ -5,64 +5,133 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Learn</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="/learnscript.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <link rel="stylesheet" href="/styles.css">
+    <script src="/learnscript.js"></script>
     <style>
         body {
             display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .content-wrapper {
+            display: flex;
+            flex: 1;
+            flex-direction: row;
         }
         .sidebar {
             width: 275px;
-            background-color: #f8f9fa;
+            background-color: #343a40;
             padding: 20px;
-            height: 100vh;
+            height: calc(100vh - 76px); /* Adjust for navbar height */
+            position: fixed;
+            color: white;
+        }
+        .sidebar .nav-link {
+            color: white;
+        }
+        .sidebar .nav-link:hover {
+            color: #f8f9fa;
         }
         .main-content {
             flex-grow: 1;
             padding: 20px;
+            margin-left: 275px; /* Same as sidebar width */
+        }
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: static;
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 10px;
+            }
+            .content-wrapper {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="sidebar">
-        <h2>Topics</h2>
-        <ul class="nav flex-column">
-            <li class="nav-item">
-                <a class="nav-link" href="#" onclick="loadContent('Stock Market Basics')">Stock Market Basics</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#" onclick="loadContent('Types of Stocks')">Types of Stocks</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#" onclick="loadContent('How the Stock Market Works')">How the Stock Market Works</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#" onclick="loadContent('How to Start Investing')">How to Start Investing</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#" onclick="loadContent('Buying and Selling Stocks')">Buying and Selling Stocks</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#" onclick="loadContent('Risk Management')">Risk Management</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#" onclick="loadContent('Stock Market Indices')">Stock Market Indices</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#" onclick="loadContent('Basic Stock Analysis')">Basic Stock Analysis</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#" onclick="loadContent('Investment Strategies')">Investment Strategies</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#" onclick="loadContent('Tools and Resources')">Tools and Resources</a>
-            </li>
-        </ul>
-      
-    </div>
-    <div id="main-content">
 
+    <nav class="navbar navbar-light navbar-custom">
+        <div class="container">
+            <a class="navbar-brand p-3">
+                <img src="/imgs/icons8-stock-96.png" width="30" height="30" alt="" loading="lazy" class="icon">
+                MarketMimic
+            </a>
+    
+            <div class="dropdown p-3 ml-3">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
+                    Menu
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                    <li><a class="dropdown-item" href="/currencyscreen">View Portfolio</a></li>
+                    <li><a class="dropdown-item" href="/learn">Symbol Search</a></li>
+                    <li><a class="dropdown-item" href="/leaderboard">Leaderboard</a></li>
+                    <li>
+                        <form action="/userlogout" method="post" class="d-inline">
+                            <button type="submit" class="dropdown-item text-danger">Log out</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="content-wrapper">
+        <div class="sidebar">
+            <h2>Topics</h2>
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="loadContent('Stock Market Basics')">Stock Market Basics</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="loadContent('Types of Stocks')">Types of Stocks</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="loadContent('How the Stock Market Works')">How the Stock Market Works</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="loadContent('How to Start Investing')">How to Start Investing</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="loadContent('Buying and Selling Stocks')">Buying and Selling Stocks</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="loadContent('Risk Management')">Risk Management</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="loadContent('Stock Market Indices')">Stock Market Indices</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="loadContent('Basic Stock Analysis')">Basic Stock Analysis</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="loadContent('Investment Strategies')">Investment Strategies</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="loadContent('Tools and Resources')">Tools and Resources</a>
+                </li>
+            </ul>
+        </div>
+        <div class="main-content" id="main-content">
+        </div>
     </div>
+
+    <footer class="footer mt-auto py-3 bg-light">
+        <div class="container text-center">
+            <span class="">© 2024 MarketMimic</span>
+            <a href="https://github.com/munir-nuggets/CMPT276-project" class="text-muted ml-2">
+                <img src="/imgs/github-mark-white.png" alt="GitHub" style="height: 24px;">
+            </a>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
-
 </html>
