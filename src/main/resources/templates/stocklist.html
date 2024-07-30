@@ -11,6 +11,14 @@
 </head>
 <body>
 
+    <div id="marketClosedMessage" class="alert alert-warning text-center" th:if="${!status.isOpen} and ${status.holiday} == null">
+        The US market is currently closed. Please check back during market hours (Monday to Friday, 9:30 AM to 4:00 PM EST).
+    </div>
+
+    <div id="holidayMessage" class="alert alert-info text-center" th:if="${status.holiday} != null">
+        The market is closed today due to ${status.holiday}.
+    </div>
+
     <nav class="navbar navbar-light navbar-custom">
         <div class="container">
             <a class="navbar-brand p-3">
@@ -38,15 +46,8 @@
 
 
     <main class="flex-grow-1">
-        <h1 id="stocklist-title" class="text-center mb-5">Search for a Symbol</h1>
+        <h1 id="stocklist-title" class="text-center mb-4">Search for a Symbol</h1>
 
-        <div id="marketClosedMessage" class="alert alert-warning text-center" th:if="${!status.isOpen} and ${status.holiday} == null">
-            The US market is currently closed. Please check back during market hours (Monday to Friday, 9:30 AM to 4:00 PM EST).
-        </div>
-
-        <div id="holidayMessage" class="alert alert-info text-center" th:if="${status.holiday} != null">
-            The market is closed today due to ${status.holiday}.
-        </div>
 
         <div class="input-group mx-auto" style="width: 75%;">
             <input type="text" id="searchInput" class="form-control" placeholder="Search for symbols..." oninput="filterStocks()">
