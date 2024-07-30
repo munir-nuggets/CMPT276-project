@@ -281,3 +281,83 @@ body, html {
     font-size: 16px; 
 }
 
+
+#news-title{
+    font-family: "Montserrat", sans-serif;
+    font-weight: 700;
+    color: #fffffe;
+    font-size: 2rem;
+    line-height: 1.2;
+}
+
+#news-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.card {
+    flex: 1 1 calc(33.333% - 20px);
+    margin: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #fffffe;
+    display: flex;
+    flex-direction: column; 
+}
+
+.card-body {
+    padding: 15px;
+    display: flex;
+    flex-direction: column; 
+}
+
+#card-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #121629;
+    margin-bottom: 10px;
+}
+
+.card-text {
+    font-size: 1rem;
+    font-weight: 400;
+    color: #121629;
+    margin-bottom: 10px;
+}
+
+.card-link {
+    color: #7f5af0;
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.card-link:hover {
+    text-decoration: underline;
+}
+
+.img-fluid {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 10px; 
+}
+
+@media (max-width: 768px) {
+    .card {
+        flex: 1 1 calc(50% - 20px);
+    }
+}
+
+@media (max-width: 576px) {
+    .card {
+        flex: 1 1 100%;
+    }
+}
+
+.btn-small {
+    padding: 0.25rem 0.5rem; 
+    font-size: 0.75rem; 
+    border-radius: 0.2rem; 
+}
