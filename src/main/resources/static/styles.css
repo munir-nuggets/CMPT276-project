@@ -361,3 +361,11 @@ body, html {
     font-size: 0.75rem; 
     border-radius: 0.2rem; 
 }
+
+#news-button{
+    background-color: #7f5af0;
+    color: #fffffe;
+    font-family: "Montserrat", sans-serif;
+    border: none; 
+}
+
