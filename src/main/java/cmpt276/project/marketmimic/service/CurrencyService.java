@@ -81,8 +81,10 @@ public class CurrencyService {
     public Double getAccountValue(User user) {
         Double totalStockValue = 0.0;
         for(StockPurchase stock : user.getStockPurchases().values()){
+            if(!stock.isPending()) {
             Double currentStockWorth = finnhubService.getSinglePrice(stock.getSymbol()) * stock.getQuantity();
             totalStockValue += currentStockWorth;
+            }
         }
         return totalStockValue + user.getUsd();
     }
