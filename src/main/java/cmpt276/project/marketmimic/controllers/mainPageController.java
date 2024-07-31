@@ -37,7 +37,7 @@ public class mainPageController {
             accountValues.put(user, accountValue);
         }
         users.sort(Comparator.comparing(accountValues::get).reversed());
-
+        users = users.subList(0, Math.min(10, users.size()));
         model.addAttribute("users", users);
         model.addAttribute("accountValues", accountValues);
         return "leaderboard";
