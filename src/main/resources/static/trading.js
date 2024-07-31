@@ -20,30 +20,3 @@ function calculateTotal() {
     const total = price * quantity;
     document.getElementById("total").value = total.toFixed(2);
 }
-
-function confirmTrade(event) {
-    event.preventDefault();
-    const total = parseFloat(document.getElementById("total").value);
-    const balance = parseFloat(document.getElementById("balance").innerText);
-    const quantity = parseInt(document.getElementById("quantity").value);
-    const quantityOwned = /*[[${quantityOwned}]]*/ 0;
-    const pendingSellingQuantity = /*[[${pendingSellingQuantity}]]*/ 0;
-    const isPurchase = document.getElementById("buy").checked;
-
-    if (isPurchase) {
-        if (total > balance) {
-            alert("Insufficient funds");
-            return false;
-        }
-    } else {
-        if ((quantity + pendingSellingQuantity) > quantityOwned) {
-            alert("Insufficient shares");
-            return false;
-        }
-    }
-
-    const confirmation = confirm("Confirm trade?");
-    if (confirmation) {
-        document.getElementById("buyForm").submit();
-    }
-}
