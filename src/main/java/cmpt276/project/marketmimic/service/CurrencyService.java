@@ -46,6 +46,10 @@ public class CurrencyService {
         userRepository.save(user);
     }
 
+    public Double twoDecimals(Double value) {
+        return Math.round(value * 100.0) / 100.0;
+    }
+
     public void sellStock(String symbol, double sellingQuantity, double price, User user) {
         StockPurchase purchasedStock = user.getStockPurchases().get(symbol);
         if(purchasedStock == null || purchasedStock.getQuantity() < sellingQuantity) {
