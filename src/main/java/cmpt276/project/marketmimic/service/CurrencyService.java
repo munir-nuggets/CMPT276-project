@@ -35,6 +35,7 @@ public class CurrencyService {
 
     public void purchaseStock(String symbol, double quantity, double price, User user) {
         if (user.getUsd() < price) return;
+        price = twoDecimals(price);
         if (price <= -9999.99) {
             addPendingTrade(symbol, quantity, price, user, true);
             return;
