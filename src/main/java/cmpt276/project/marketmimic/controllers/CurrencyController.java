@@ -63,6 +63,7 @@ public class CurrencyController {
         for(StockPurchase stock : user.getStockPurchases().values()){
             if (!stock.isPending()) {
                 Double currentStockWorth = finnhubService.getSinglePrice(stock.getSymbol()) * stock.getQuantity();
+                currentStockWorth = currencyService.twoDecimals(currentStockWorth);
                 totalStockValue += currentStockWorth;
                 Double stockReturn = (currentStockWorth / stock.getPrice());
                 stockReturn = Math.round(stockReturn * 1000.0) / 10.0;
@@ -73,6 +74,7 @@ public class CurrencyController {
         model.addAttribute("stockReturns", stockReturns);
         model.addAttribute("currentValues", currentValues);
         double accountValue = totalStockValue + user.getUsd();
+        accountValue = currencyService.twoDecimals(accountValue);
         model.addAttribute("accountValue", accountValue);
         double initialAccountValue = 10000.0;
         double accountReturn = Math.round(accountValue / initialAccountValue * 1000.0) / 10.0;
