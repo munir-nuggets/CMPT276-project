@@ -10,42 +10,33 @@
         "https://corporatefinanceinstitute.com/resources/career-map/sell-side/capital-markets/growth-stocks-vs-value-stocks/#:~:text=The%20act%20of%20investing%20in,similar%20stocks%20in%20the%20market.",
         "https://www.td.com/ca/en/investing/direct-investing/articles/dividend-stocks#:~:text=What%20are%20dividend%20stocks%3F,a%20return%20from%20their%20investment."
     ],
-    "How the Stock Market Works": [
-        "Order types (market, limit, stop-loss)",
-        "Bid-ask spread",
-        "Market participants (retail investors, institutional investors)"
-    ],
     "How to Start Investing": [
-        "Setting financial goals",
-        "Choosing a brokerage account",
-        "Building an investment portfolio"
+        "https://www.nasdaq.com/articles/how-to-set-financial-goals-for-investing",
+        "https://www.investopedia.com/investing/complete-guide-choosing-online-stock-broker/",
+        "https://www.forbes.com/advisor/investing/how-to-build-investment-portfolio/"
     ],
     "Buying and Selling Stocks": [
-        "Placing a trade (buying and selling)",
-        "Understanding stock quotes",
-        "Reading stock tickers"
+        "https://www.td.com/ca/en/investing/direct-investing/articles/how-to-buy-stocks",
+        "https://www.personalfinancelab.com/beginners/reading-stock-quotes/",
+        "https://www.investopedia.com/ask/answers/12/what-is-a-stock-ticker.asp#:~:text=The%20ticker%20provides%20current%20information,down%22%20arrow%20if%20the%20price"
     ],
     "Risk Management": [
-        "Diversification",
-        "Setting stop-loss orders",
-        "Understanding market volatility"
-    ],
-    "Stock Market Indices": [
-        "Major indices (e.g., S&P 500, Dow Jones, NASDAQ Composite)",
-        "How indices are used"
+        "https://online.hbs.edu/blog/post/how-to-diversify-your-portfolio",
+        "https://www.questrade.com/learning/investment-concepts/adv-order-types-durations/stop-limit-orders",
+        "https://www.fool.com/terms/s/stock-market-volatility/"
     ],
     "Basic Stock Analysis": [
-        "Introduction to fundamental analysis (basic financial statements)",
-        "Introduction to technical analysis (basic charts)"
+        "https://www.td.com/ca/en/investing/direct-investing/articles/fundamental-analysis",
+        "https://www.cfainstitute.org/en/membership/professional-development/refresher-readings/technical-analysis#:~:text=Technical%20analysis%20is%20a%20form,order%20to%20make%20investment%20recommendations."
     ],
     "Investment Strategies": [
-        "Buy and hold",
-        "Basic value investing",
-        "Basic growth investing"
+        "https://www.investopedia.com/terms/b/buyandhold.asp#:~:text=Buy%20and%20hold%20is%20a%20long%2Dterm%20passive%20strategy%20where,typically%20defer%20capital%20gains%20taxes.",
+        "https://www.fool.com/investing/stock-market/types-of-stocks/value-stocks/value-investing-guide/",
+        "https://corporatefinanceinstitute.com/resources/career-map/sell-side/capital-markets/a-guide-to-growth-investing/#:~:text=Growth%20investing%20is%20essentially%20the,a%20substantial%20period%20of%20time."
     ],
     "Tools and Resources": [
-        "Stock screeners",
-        "Financial news sources",
-        "Investment apps and software"
+        "https://finance.yahoo.com/screener/new/",
+        "https://www.cnbc.com/",
+        "https://www.forbes.com/advisor/investing/best-investment-apps/"
     ]
 }
